@@ -7,13 +7,19 @@ import javafx.scene.image.ImageView;
 
 public class HelloController {
     @FXML
-    private Button startButton;
-
-    @FXML
     private ImageView tamagotchiBackground;
 
     @FXML
     private ImageView eggImage;
+
+    @FXML
+    private ImageView menuImage;
+
+    @FXML
+    private ImageView menuFocusFoodImage;
+
+    @FXML
+    private Button startButton;
 
     @FXML
     private Button buttonLeft;
@@ -22,14 +28,27 @@ public class HelloController {
     private Button buttonMiddle;
 
     @FXML
-    private Button buttonRight;
+    private boolean isMenuActive;
 
-    @FXML
-    private ImageView menuImage;
+    private Button buttonRight;
 
     private int clickCount = 0;
 
+    private int imageIndex = 0;
+
     AnimationHelper animationHelper = new AnimationHelper();
+
+    private final String[] menuFocusImages = {
+            "/images/MenuFocusFood.png",
+            "/images/MenuFocusLight.png",
+            "/images/MenuFocusPlay.png",
+            "/images/MenuFocusMedicine.png",
+            "/images/MenuFocusBathing.png",
+            "/images/MenuFocusWeight.png",
+            "/images/MenuFocusPacman.png",
+            "/images/MenuFocusAttention.png",
+            "/images/MenuNoFocus.png"
+    };
 
 
     @FXML
@@ -52,17 +71,20 @@ public class HelloController {
     @FXML
     public void handleStart(){
         // Bild laden
+        Image imageMenu = new Image(getClass().getResource("/images/MenuNoFocus.png").toExternalForm());
+        menuImage.setImage(imageMenu);
+
         Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
         eggImage.setImage(imageEgg);
 
-        Image imageMenu = new Image(getClass().getResource("/images/Menu.png").toExternalForm());
-        //menuImage.setVisible(true);
-
         // Bild anzeigen
+        menuImage.setVisible(true);
         eggImage.setVisible(true);
 
         // Start-Button ausblenden
         startButton.setVisible(false);
+
+        isMenuActive = true;
     }
 
     @FXML
@@ -88,7 +110,20 @@ public class HelloController {
                 });
             }).start();
         }
-
     }
 
+    @FXML
+    public void handleClickButtonRight(){
+        if (isMenuActive) {
+            // Bildpfad laden
+            String path = menuFocusImages[imageIndex];
+
+            // Bild setzen
+            Image image = new Image(getClass().getResource(path).toExternalForm());
+            menuImage.setImage(image);
+
+            // Index erhöhen, bei 8 zurück auf 0 setzen
+            imageIndex = (imageIndex + 1) % menuFocusImages.length;
+        }
+    }
 }
