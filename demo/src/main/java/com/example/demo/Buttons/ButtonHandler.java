@@ -2,6 +2,7 @@ package com.example.demo.Buttons;
 
 import com.example.demo.AnimationHelper;
 import com.example.demo.TamagotchiState;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -28,12 +29,12 @@ public class ButtonHandler {
         }
     }
 
-    public void handleClickButtonLeftMenuStart(ImageView eggImage){
+    public void handleClickButtonLeftMenuStart(ImageView currentImage){
         tamagotchiState.clickCountMenu++;
 
         if (tamagotchiState.isMenuActive()){
             if (tamagotchiState.clickCountMenu ==3){
-                animationHelper.animateStartSequence(eggImage); //Ei Sequenz starten
+                animationHelper.animateStartSequence(currentImage); //Ei Sequenz starten
 
                 // 2. Nach der Animation Bild ändern
                 // Verzögerung hinzufügen, damit das neue Bild nicht sofort kommt
@@ -47,7 +48,7 @@ public class ButtonHandler {
                     // UI-Update zurück im JavaFX-Thread
                     javafx.application.Platform.runLater(() -> {
                         Image babyImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
-                        eggImage.setImage(babyImage);
+                        currentImage.setImage(babyImage);
                     });
                     tamagotchiState.setBabyActive(true);
                 }).start();
@@ -55,18 +56,31 @@ public class ButtonHandler {
         }
     }
 
-    public void handleClickButtonMiddleMenu(ImageView menuImage, ImageView eggImage){
-        if (tamagotchiState.imageIndex == 6){
-            Image weightDisplayImage = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
-            menuImage.setImage(weightDisplayImage);
+    public void handleClickButtonMiddleMenu6(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge) {
+        Image weightDisplayImage = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
+        menuImage.setImage(weightDisplayImage);
 
-            tamagotchiState.setMenuActive(false);
-            tamagotchiState.setWeightMenuActive(true);
+        tamagotchiState.setMenuActive(false);
+        tamagotchiState.setWeightMenuActive(true);
+        tamagotchiState.setBabyActive(false);
 
-            if (tamagotchiState.isWeightMenuActive()){
-                tamagotchiState.setBabyActive(false);
-                eggImage.setVisible(false);
-            }
-        }
+        currentImage.setVisible(false);
+
+        labelWeight.setVisible(true);
+        labelAge.setVisible(true);
     }
+
+    public void handleButtonMiddleWeightMenu(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge){
+        Image imageMenuFocusWeight = new Image(getClass().getResource("/images/MenuFocusWeight.png").toExternalForm());
+        menuImage.setImage(imageMenuFocusWeight);
+        labelWeight.setVisible(false);
+        labelAge.setVisible(false);
+
+        tamagotchiState.setWeightMenuActive(false);
+        tamagotchiState.setMenuActive(true);
+        tamagotchiState.setBabyActive(true);
+
+        currentImage.setVisible(true);
+    }
+
 }

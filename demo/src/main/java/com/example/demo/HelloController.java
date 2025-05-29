@@ -2,24 +2,23 @@ package com.example.demo;
 
 import com.example.demo.Buttons.ButtonHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
+
+import java.net.URL;
 
 public class HelloController {
     // Images
     @FXML
     private ImageView tamagotchiBackground;
     @FXML
-    private ImageView eggImage;
+    private ImageView currentImage;
     @FXML
     private ImageView menuImage;
-    @FXML
-    private ImageView babyImage;
-    @FXML
-    private ImageView menuFocusFoodImage;
-    @FXML
-    private  ImageView displayWeightImage;
 
     // Buttons
     @FXML
@@ -30,6 +29,12 @@ public class HelloController {
     private Button buttonMiddle;
     @FXML
     private Button buttonRight;
+
+    //Labels
+    @FXML
+    private Label labelWeight;
+    @FXML
+    private Label labelAge;
 
     private final TamagotchiState tamagotchiState = new TamagotchiState();
     private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState);
@@ -52,21 +57,15 @@ public class HelloController {
     public void initialize() {
         Image imageBackground = new Image(getClass().getResource("/images/TamagotchiUI.png").toExternalForm());
         tamagotchiBackground.setImage(imageBackground);
-
-        Image imageDisplayWeight = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
-        displayWeightImage.setImage(imageDisplayWeight);
-
-        displayWeightImage.setVisible(false);
-        eggImage.setVisible(false);
-
+        currentImage.setVisible(false);
         buttonLeft.setOpacity(0);
         buttonLeft.setMouseTransparent(false);
-
         buttonMiddle.setOpacity(0);
         buttonMiddle.setMouseTransparent(false);
-
         buttonRight.setOpacity(0);
         buttonRight.setMouseTransparent(false);
+
+        updateWeightDisplay();
     }
 
     @FXML
@@ -76,11 +75,11 @@ public class HelloController {
         menuImage.setImage(imageMenu);
 
         Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
-        eggImage.setImage(imageEgg);
+        currentImage.setImage(imageEgg);
 
         // Bild anzeigen
         menuImage.setVisible(true);
-        eggImage.setVisible(true);
+        currentImage.setVisible(true);
 
         // Start-Button ausblenden
         startButton.setVisible(false);
@@ -88,24 +87,37 @@ public class HelloController {
         tamagotchiState.setMenuActive(true);
     }
 
+    public void updateWeightDisplay() {
+        labelWeight.setText(tamagotchiState.weight + " kg");
+        labelAge.setText(tamagotchiState.age + " yr");
+    }
+
     @FXML
     public void handleClickButtonLeft(){
         if(tamagotchiState.isMenuActive()){
-            buttonHandler.handleClickButtonLeftMenuStart(eggImage);
+            buttonHandler.handleClickButtonLeftMenuStart(currentImage);
         }
     }
 
     @FXML
     public void handleClickButtonRight(){
-        if (tamagotchiState.isMenuActive()){
+        if (tamagotchiState.isMenuActive() && !tamagotchiState.isWeightMenuActive()){
             buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
         }
     }
 
     @FXML
     public void handleClickButtonMiddle(){
-        if (tamagotchiState.isMenuActive()){
-            buttonHandler.handleClickButtonMiddleMenu(menuImage, eggImage);
+        switch (tamagotchiState.imageIndex){
+            case 6:
+                if (tamagotchiState.isMenuActive()){
+                    buttonHandler.handleClickButtonMiddleMenu6(menuImage, currentImage, labelWeight, labelAge);
+                } else{
+                    buttonHandler.handleButtonMiddleWeightMenu(menuImage, currentImage, labelWeight, labelAge);
+                }
+
+            case 2:
+                return;
         }
     }
 }

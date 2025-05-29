@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "Press Start 2P Regular";
+    src: url("../fonts/PressStart2P-Regular.ttf");
+}
+
+.pixel-font {
+    -fx-font-family: "Press Start 2P Regular";
+    -fx-font-size: 17px;
+}
