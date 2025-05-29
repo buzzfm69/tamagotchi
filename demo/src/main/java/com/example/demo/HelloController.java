@@ -1,42 +1,35 @@
 package com.example.demo;
 
+import com.example.demo.Buttons.ButtonHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class HelloController {
+    // Images
     @FXML
     private ImageView tamagotchiBackground;
-
     @FXML
     private ImageView eggImage;
-
     @FXML
     private ImageView menuImage;
-
     @FXML
     private ImageView menuFocusFoodImage;
 
+    // Buttons
     @FXML
     private Button startButton;
-
     @FXML
     private Button buttonLeft;
-
     @FXML
     private Button buttonMiddle;
-
     @FXML
-    private boolean isMenuActive;
-
     private Button buttonRight;
 
-    private int clickCount = 0;
+    private final TamagotchiState tamagotchiState = new TamagotchiState();
+    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState);
 
-    private int imageIndex = 0;
-
-    AnimationHelper animationHelper = new AnimationHelper();
 
     private final String[] menuFocusImages = {
             "/images/MenuFocusFood.png",
@@ -84,46 +77,16 @@ public class HelloController {
         // Start-Button ausblenden
         startButton.setVisible(false);
 
-        isMenuActive = true;
+        tamagotchiState.isMenuActive = true;
     }
 
     @FXML
     public void handleClickButtonLeft(){
-        clickCount++;
-
-        if (clickCount ==3){
-            animationHelper.animateStartSequence(eggImage); //Ei Sequenz starten
-
-            // 2. Nach der Animation Bild ändern
-            // Verzögerung hinzufügen, damit das neue Bild nicht sofort kommt
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000); // Warten, bis die Animation sichtbar ist
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                // UI-Update zurück im JavaFX-Thread
-                javafx.application.Platform.runLater(() -> {
-                    Image newImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
-                    eggImage.setImage(newImage);
-                });
-            }).start();
-        }
+        buttonHandler.handleClickButtonLeftMenu(eggImage);
     }
 
     @FXML
     public void handleClickButtonRight(){
-        if (isMenuActive) {
-            // Bildpfad laden
-            String path = menuFocusImages[imageIndex];
-
-            // Bild setzen
-            Image image = new Image(getClass().getResource(path).toExternalForm());
-            menuImage.setImage(image);
-
-            // Index erhöhen, bei 8 zurück auf 0 setzen
-            imageIndex = (imageIndex + 1) % menuFocusImages.length;
-        }
+        buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
     }
 }
