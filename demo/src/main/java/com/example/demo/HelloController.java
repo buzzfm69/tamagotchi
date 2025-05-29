@@ -36,8 +36,9 @@ public class HelloController {
     @FXML
     private Label labelAge;
 
+    private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
-    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState);
+    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper);
 
 
     private final String[] menuFocusImages = {
@@ -85,6 +86,7 @@ public class HelloController {
         startButton.setVisible(false);
 
         tamagotchiState.setMenuActive(true);
+        tamagotchiState.setEggActive(true);
     }
 
     public void updateWeightDisplay() {
@@ -94,30 +96,37 @@ public class HelloController {
 
     @FXML
     public void handleClickButtonLeft(){
+        // aktiviere Tamagotchi; 3x klicken
         if(tamagotchiState.isMenuActive()){
             buttonHandler.handleClickButtonLeftMenuStart(currentImage);
         }
     }
 
+    // switche Menüs im Hauptmenü
     @FXML
     public void handleClickButtonRight(){
-        if (tamagotchiState.isMenuActive() && !tamagotchiState.isWeightMenuActive()){
+        if (tamagotchiState.isMenuActive() && !tamagotchiState.isEggActive()){
             buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
         }
     }
 
+    // aktiviere Menü im Hauptmenü
     @FXML
     public void handleClickButtonMiddle(){
         switch (tamagotchiState.imageIndex){
+            case 2:
+                if (tamagotchiState.isMenuActive()){
+                    buttonHandler.handleClickButtonMiddleMenu2(menuImage, currentImage);
+                }
+                break;
+
             case 6:
                 if (tamagotchiState.isMenuActive()){
                     buttonHandler.handleClickButtonMiddleMenu6(menuImage, currentImage, labelWeight, labelAge);
                 } else{
                     buttonHandler.handleButtonMiddleWeightMenu(menuImage, currentImage, labelWeight, labelAge);
                 }
-
-            case 2:
-                return;
+                break;
         }
     }
 }

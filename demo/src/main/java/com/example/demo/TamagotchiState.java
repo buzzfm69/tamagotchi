@@ -4,11 +4,15 @@ public class TamagotchiState {
     private boolean isMenuActive;
     private boolean isWeightMenuActive = false;
     private boolean isGameMenuActive;
+    private boolean isSleepMenuActive = false;
 
+    private  boolean isEggActive;
     private boolean isBabyActive;
     private boolean isChildActive;
     private boolean isTeenagerActive;
     private boolean isAdultActive;
+
+    private boolean isSleeping;
 
     public int imageIndex = 0;
     public int clickCountMenu = 0;
@@ -86,5 +90,53 @@ public class TamagotchiState {
 
     public void setGameMenuActive(boolean gameMenuActive) {
         isGameMenuActive = gameMenuActive;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Boolean getSleepMenuActive() {
+        return isSleepMenuActive;
+    }
+
+    public void setSleepMenuActive(Boolean sleepMenuActive) {
+        isSleepMenuActive = sleepMenuActive;
+    }
+
+    public boolean isSleeping() {
+        return isSleeping;
+    }
+
+    public void setSleeping(boolean sleeping) {
+        isSleeping = sleeping;
+    }
+
+    public boolean isEggActive() {
+        return isEggActive;
+    }
+
+    public void setEggActive(boolean eggActive) {
+        isEggActive = eggActive;
+    }
+
+    public boolean isSleepMenuActive() {
+        return isSleepMenuActive;
+    }
+
+    public void setSleepMenuActive(boolean sleepMenuActive) {
+        isSleepMenuActive = sleepMenuActive;
     }
 }

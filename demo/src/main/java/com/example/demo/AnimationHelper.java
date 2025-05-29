@@ -9,6 +9,8 @@ import javafx.animation.*;
 
 
 public class AnimationHelper {
+    private TranslateTransition idleAnimation;
+
     public TranslateTransition animateJump(ImageView imageView, double height, int cycleCount, double durationMs) {
         TranslateTransition jump = new TranslateTransition(Duration.millis(durationMs), imageView); // Dauer Sprung
         jump.setByY(-height);  // x Pixel nach oben
@@ -79,9 +81,9 @@ public class AnimationHelper {
         TranslateTransition fall2 = AnimationHelper.moveDown(imageView, 15, 500);
 
         // Idle Animation: leichtes Wackeln
-        TranslateTransition idle = AnimationHelper.moveRight(imageView, 5, 300);
-        idle.setCycleCount(Animation.INDEFINITE);
-        idle.setAutoReverse(true);
+        idleAnimation = AnimationHelper.moveRight(imageView, 5, 300);
+        idleAnimation.setCycleCount(Animation.INDEFINITE);
+        idleAnimation.setAutoReverse(true);
 
         // Sequenz erstellen
         SequentialTransition sequence = new SequentialTransition(
@@ -92,7 +94,13 @@ public class AnimationHelper {
                 moveLeft,
                 jump2,
                 fall2);
-        sequence.setOnFinished(e -> idle.play());
+        sequence.setOnFinished(e -> idleAnimation.play());
         sequence.play();
+    }
+
+    public void stopIdle() {
+        if (idleAnimation != null) {
+            idleAnimation.stop();
+        }
     }
 }
