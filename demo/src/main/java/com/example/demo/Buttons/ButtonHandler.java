@@ -60,7 +60,7 @@ public class ButtonHandler {
     }
 
     // aktiviere Menü 2 = Sleep Menü
-    public void buttonMiddleActivateMenu2(ImageView menuImage, ImageView currentImage){
+    public void buttonMiddleActivateMenu2(ImageView menuImage, ImageView currentImage, Label labelSleep){
         tamagotchiState.setSleepMenuActive(true);
         tamagotchiState.setMenuActive(false);
         tamagotchiState.setSleeping(true);
@@ -81,11 +81,14 @@ public class ButtonHandler {
             Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
             currentImage.setImage(adultImage);
         }
+
+        labelSleep.setVisible(true);
         animationHelper.stopIdle();
+        animationHelper.animateSleepLabel(labelSleep);
     }
 
     // verlasse Menü 2 = Sleep Menü
-    public void buttonMiddleLeaveMenu2(ImageView menuImage, ImageView currentImage){
+    public void buttonMiddleLeaveMenu2(ImageView menuImage, ImageView currentImage, Label labelSleep){
         Image imageMenuFocusLight = new Image(getClass().getResource("/images/MenuFocusLight.png").toExternalForm());
         menuImage.setImage(imageMenuFocusLight);
 
@@ -106,7 +109,10 @@ public class ButtonHandler {
             Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
             currentImage.setImage(adultImage);
         }
+
         animationHelper.startIdle(currentImage);
+        animationHelper.stopSleepLabelAnimation();
+        labelSleep.setVisible(false);
     }
 
     // aktiviere Menü 6 = Weight Menü

@@ -3,6 +3,7 @@ package com.example.demo;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import javafx.animation.*;
@@ -10,6 +11,8 @@ import javafx.animation.*;
 
 public class AnimationHelper {
     private TranslateTransition idleAnimation;
+    private FadeTransition sleepFade;
+    private Timeline sleepTextTimeline;
 
     public TranslateTransition animateJump(ImageView imageView, double height, int cycleCount, double durationMs) {
         TranslateTransition jump = new TranslateTransition(Duration.millis(durationMs), imageView); // Dauer Sprung
@@ -102,5 +105,45 @@ public class AnimationHelper {
         idleAnimation.setCycleCount(TranslateTransition.INDEFINITE);
         idleAnimation.setAutoReverse(true);
         idleAnimation.play();
+    }
+
+    public void animateSleepLabel(Label labelSleep){
+        // Texte, die im Loop angezeigt werden
+        String[] sleepTexts = {"z", "zZ", "zZz"};
+
+        // Timeline für Textwechsel
+        sleepTextTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event -> {
+            String currentText = labelSleep.getText();
+            int nextIndex = 0;
+            for (int i = 0; i < sleepTexts.length; i++) {
+                if (sleepTexts[i].equals(currentText)) {
+                    nextIndex = (i + 1) % sleepTexts.length;
+                    break;
+                }
+            }
+            labelSleep.setText(sleepTexts[nextIndex]);
+        }));
+        sleepTextTimeline.setCycleCount(Animation.INDEFINITE);
+        sleepTextTimeline.play();
+
+        // Fade-Animation für leichtes Ein-/Ausblenden
+        sleepFade = new FadeTransition(Duration.seconds(1.2), labelSleep);
+        sleepFade.setFromValue(1.0);
+        sleepFade.setToValue(0.4);
+        sleepFade.setCycleCount(Animation.INDEFINITE);
+        sleepFade.setAutoReverse(true);
+        sleepFade.play();
+
+        // Label sichtbar machen
+        labelSleep.setVisible(true);
+    }
+
+    public void stopSleepLabelAnimation() {
+        if (sleepTextTimeline != null) {
+            sleepTextTimeline.stop();
+        }
+        if (sleepFade != null) {
+            sleepFade.stop();
+        }
     }
 }

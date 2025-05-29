@@ -19,7 +19,6 @@ public class TamagotchiState {
     public int weight = 1;
     public int age = 1;
 
-
     public boolean isMenuActive() {
         return isMenuActive;
     }

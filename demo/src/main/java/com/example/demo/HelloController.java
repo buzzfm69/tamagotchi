@@ -35,6 +35,8 @@ public class HelloController {
     private Label labelWeight;
     @FXML
     private Label labelAge;
+    @FXML
+    private Label labelSleep;
 
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
@@ -116,9 +118,9 @@ public class HelloController {
         switch (tamagotchiState.imageIndex){
             case 2:
                 if (tamagotchiState.isMenuActive()){
-                    buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage);
+                    buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage, labelSleep);
                 } else {
-                    buttonHandler.buttonMiddleLeaveMenu2(menuImage, currentImage);
+                    buttonHandler.buttonMiddleLeaveMenu2(menuImage, currentImage, labelSleep);
                 }
                 break;
 
