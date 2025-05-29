@@ -37,11 +37,12 @@ public class HelloController {
     private Label labelAge;
     @FXML
     private Label labelSleep;
+    @FXML
+    private Label labelHunger;
 
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
     private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper);
-
 
     private final String[] menuFocusImages = {
             "/images/MenuFocusFood.png",
@@ -68,6 +69,7 @@ public class HelloController {
         buttonRight.setOpacity(0);
         buttonRight.setMouseTransparent(false);
 
+        tamagotchiState.startStateTimer(labelHunger);
         updateWeightDisplay();
     }
 
@@ -76,6 +78,9 @@ public class HelloController {
         // Bild laden
         Image imageMenu = new Image(getClass().getResource("/images/MenuNoFocus.png").toExternalForm());
         menuImage.setImage(imageMenu);
+
+        //tamagotchiState.getCurrentStage();
+        //buttonHandler.changeStateAndImage(currentImage);
 
         Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
         currentImage.setImage(imageEgg);
@@ -86,8 +91,10 @@ public class HelloController {
 
         // Start-Button ausblenden
         startButton.setVisible(false);
+        tamagotchiState.setStartButtonActive(false);
 
         tamagotchiState.setMenuActive(true);
+
         tamagotchiState.setEggActive(true);
     }
 

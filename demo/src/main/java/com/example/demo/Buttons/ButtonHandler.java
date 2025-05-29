@@ -1,6 +1,7 @@
 package com.example.demo.Buttons;
 
 import com.example.demo.AnimationHelper;
+import com.example.demo.LifeStage;
 import com.example.demo.TamagotchiState;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,6 +14,36 @@ public class ButtonHandler {
     public ButtonHandler(TamagotchiState tamagotchiState, AnimationHelper animationHelper) {
         this.tamagotchiState = tamagotchiState;
         this.animationHelper = animationHelper;
+    }
+
+    public void changeStateAndImage(ImageView currentImage){
+        switch (tamagotchiState.getCurrentStage()){
+            case BABY:
+                if (tamagotchiState.isSleeping()){
+                    Image babySleepingImage = new Image(getClass().getResource("/images/BabySleeping.png").toExternalForm());
+                    currentImage.setImage(babySleepingImage);
+                }else {
+                    Image babySleepingImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
+                    currentImage.setImage(babySleepingImage);
+                }
+                tamagotchiState.setBabyActive(true);
+                break;
+            case CHILD:
+                Image childImage = new Image(getClass().getResource("/images/Child.png").toExternalForm());
+                currentImage.setImage(childImage);
+                tamagotchiState.setChildActive(true);
+                break;
+            case TEEN:
+                Image teenagerImage = new Image(getClass().getResource("/images/Teenager.png").toExternalForm());
+                currentImage.setImage(teenagerImage);
+                tamagotchiState.setTeenagerActive(true);
+                break;
+            case ADULT:
+                Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
+                currentImage.setImage(adultImage);
+                tamagotchiState.setAdultActive(true);
+                break;
+        }
     }
 
     // Button Rechts Hauptmenüs, Menüs Switchen
@@ -54,6 +85,7 @@ public class ButtonHandler {
                     });
                     tamagotchiState.setEggActive(false);
                     tamagotchiState.setBabyActive(true);
+                    tamagotchiState.setCurrentStage(LifeStage.BABY);
                 }).start();
             }
         }
@@ -68,23 +100,10 @@ public class ButtonHandler {
         Image menuSleepOnImage = new Image(getClass().getResource("/images/MenuSleepOn.png").toExternalForm());
         menuImage.setImage(menuSleepOnImage);
 
-        if (tamagotchiState.isBabyActive()){
-            Image babySleepingImage = new Image(getClass().getResource("/images/BabySleeping.png").toExternalForm());
-            currentImage.setImage(babySleepingImage);
-        } else if (tamagotchiState.isChildActive()) {
-            Image childImage = new Image(getClass().getResource("/images/Child.png").toExternalForm());
-            currentImage.setImage(childImage);
-        } else if (tamagotchiState.isTeenagerActive()) {
-            Image teenagerImage = new Image(getClass().getResource("/images/Teenager.png").toExternalForm());
-            currentImage.setImage(teenagerImage);
-        } else if (tamagotchiState.isAdultActive()) {
-            Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
-            currentImage.setImage(adultImage);
-        }
-
         labelSleep.setVisible(true);
         animationHelper.stopIdle();
         animationHelper.animateSleepLabel(labelSleep);
+        changeStateAndImage(currentImage);
     }
 
     // verlasse Menü 2 = Sleep Menü
@@ -96,20 +115,7 @@ public class ButtonHandler {
         tamagotchiState.setSleeping(false);
         tamagotchiState.setMenuActive(true);
 
-        if (tamagotchiState.isBabyActive()){
-            Image babyImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
-            currentImage.setImage(babyImage);
-        } else if (tamagotchiState.isChildActive()) {
-            Image childImage = new Image(getClass().getResource("/images/Child.png").toExternalForm());
-            currentImage.setImage(childImage);
-        } else if (tamagotchiState.isTeenagerActive()) {
-            Image teenagerImage = new Image(getClass().getResource("/images/Teenager.png").toExternalForm());
-            currentImage.setImage(teenagerImage);
-        } else if (tamagotchiState.isAdultActive()) {
-            Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
-            currentImage.setImage(adultImage);
-        }
-
+        changeStateAndImage(currentImage);
         animationHelper.startIdle(currentImage);
         animationHelper.stopSleepLabelAnimation();
         labelSleep.setVisible(false);
@@ -123,7 +129,7 @@ public class ButtonHandler {
 
             tamagotchiState.setMenuActive(false);
             tamagotchiState.setWeightMenuActive(true);
-            tamagotchiState.resetAllStages();
+            tamagotchiState.resetAllStates();
 
             currentImage.setVisible(false);
 
@@ -142,9 +148,7 @@ public class ButtonHandler {
         tamagotchiState.setWeightMenuActive(false);
         tamagotchiState.setMenuActive(true);
 
-        // TODO: replace with enum getCurrentStage
-        tamagotchiState.setBabyActive(true);
-
+        changeStateAndImage(currentImage);
         currentImage.setVisible(true);
     }
 

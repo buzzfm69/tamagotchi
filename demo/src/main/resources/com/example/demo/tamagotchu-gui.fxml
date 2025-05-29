@@ -60,6 +60,10 @@
             <Font name="Press Start 2P Regular" size="12.0" />
          </font>
       </Label>
+      <Label fx:id="labelHunger" layoutX="31.0" layoutY="20.0" prefHeight="27.0" prefWidth="147.0" text="Hunger: 100" />
+      <Label fx:id="labelSauberkeit" layoutX="31.0" layoutY="39.0" prefHeight="17.0" prefWidth="94.0" text="Sauberkeit: " />
+      <Label fx:id="labelGesundheit" layoutX="31.0" layoutY="56.0" prefHeight="17.0" prefWidth="94.0" text="Gesundheit: " />
+      <Label fx:id="labelStimmung" layoutX="31.0" layoutY="73.0" prefHeight="17.0" prefWidth="68.0" text="Stimmung" />
 
    </children>
 </AnchorPane>
