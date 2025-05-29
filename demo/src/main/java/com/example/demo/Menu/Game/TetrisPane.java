@@ -5,7 +5,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.util.Random;
 
@@ -20,28 +23,70 @@ public class TetrisPane extends Pane {
   private final int[][] grid = new int[ROWS][COLS];
 
   private Tetromino currentPiece;
+  private Tetromino nextPiece;
   private final Random random = new Random();
   private int tick = 0;
   private int score = 0;
+  private MediaPlayer mediaPlayer;
+  private boolean gameOver = false;
 
   public TetrisPane() {
-    canvas = new Canvas((COLS + 2) * TILE_SIZE, ROWS * TILE_SIZE);
+    canvas = new Canvas((COLS + 10) * TILE_SIZE, ROWS * TILE_SIZE);
     gc = canvas.getGraphicsContext2D();
     this.getChildren().add(canvas);
+    try {
+      Font pixelFont = Font.loadFont(getClass().getResource("/fonts/PressStart2P-Regular.ttf").toExternalForm(), 8);
+      gc.setFont(pixelFont);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    playMusic("/music/Tetris.mp3");
 
     spawnNewPiece();
     startGameLoop();
+  }
+
+  private void playMusic(String path) {
+    try {
+      Media sound = new Media(getClass().getResource(path).toExternalForm());
+      mediaPlayer = new MediaPlayer(sound);
+      mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // loop forever
+      mediaPlayer.setVolume(0.2);
+      mediaPlayer.play();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void playOneShot(String path) {
+    try {
+      Media sound = new Media(getClass().getResource(path).toExternalForm());
+      MediaPlayer oneShot = new MediaPlayer(sound);
+      oneShot.setVolume(0.3);
+      oneShot.play();
+      oneShot.setOnEndOfMedia(oneShot::dispose);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void stopMusic() {
+    if (mediaPlayer != null) {
+      mediaPlayer.stop();
+    }
   }
 
   private void startGameLoop() {
     AnimationTimer timer = new AnimationTimer() {
       @Override
       public void handle(long now) {
-        tick++;
-        if (tick % 30 == 0) { // Adjust speed here
-          moveDown();
+        if (!gameOver) {
+          tick++;
+          if (tick % 30 == 0) {
+            moveDown();
+          }
+          render();
         }
-        render();
       }
     };
     timer.start();
@@ -57,7 +102,20 @@ public class TetrisPane extends Pane {
   }
 
   private void spawnNewPiece() {
-    currentPiece = new Tetromino(Tetromino.SHAPES[random.nextInt(Tetromino.SHAPES.length)]);
+    if (nextPiece == null) {
+      currentPiece = new Tetromino(Tetromino.SHAPES[random.nextInt(Tetromino.SHAPES.length)]);
+    } else {
+      currentPiece = nextPiece;
+    }
+
+    nextPiece = new Tetromino(Tetromino.SHAPES[random.nextInt(Tetromino.SHAPES.length)]);
+
+    // Game Over check
+    if (!canMove(currentPiece, currentPiece.x, currentPiece.y)) {
+      gameOver = true;
+      stopMusic();
+      playOneShot("/music/GameOver.mp3");
+    }
   }
 
   private boolean canMove(Tetromino t, int newX, int newY) {
@@ -115,8 +173,62 @@ public class TetrisPane extends Pane {
       }
     }
 
-    gc.setFill(Color.RED);
-    gc.fillText("Score: " + score, 2, 10);
+    gc.setFill(Color.BLACK);
+    gc.fillText("Score:" + score, (COLS + 1) * TILE_SIZE, 10);
+
+    if (nextPiece != null) {
+      int previewBoxX = (COLS + 2) * TILE_SIZE; // shifted more right
+      int previewBoxY = 15;
+      int boxSize = 3 * TILE_SIZE;
+
+      // 🟦 Draw preview frame
+      gc.setStroke(Color.BLACK);
+      gc.setLineWidth(1);
+      gc.strokeRect(previewBoxX - 2, previewBoxY - 2, boxSize + 4, boxSize + 4);
+
+      // 🏷️ Label
+      gc.setFill(Color.BLACK);
+
+      // 🧱 Center nextPiece inside the box
+      int shapeHeight = nextPiece.shape.length;
+      int shapeWidth = nextPiece.shape[0].length;
+
+      int pieceOffsetX = (boxSize - shapeWidth * TILE_SIZE) / 2;
+      int pieceOffsetY = (boxSize - shapeHeight * TILE_SIZE) / 2;
+
+      gc.setFill(Color.BLACK);
+      for (int y = 0; y < shapeHeight; y++) {
+        for (int x = 0; x < shapeWidth; x++) {
+          if (nextPiece.shape[y][x] == 1) {
+            gc.fillRect(
+                    previewBoxX + pieceOffsetX + x * TILE_SIZE,
+                    previewBoxY + pieceOffsetY + y * TILE_SIZE,
+                    TILE_SIZE - 1,
+                    TILE_SIZE - 1
+            );
+          }
+        }
+      }
+    }
+
+    if (gameOver) {
+      gc.setFill(Color.BLACK);
+
+      Font gameOverFont = Font.loadFont(
+              getClass().getResource("/fonts/PressStart2P-Regular.ttf").toExternalForm(),
+              15 // or try 14–16 if you want it even bigger
+      );
+      gc.setFont(gameOverFont);
+
+      gc.fillText("GAME OVER", (COLS - 9) * TILE_SIZE, 55);
+
+      // Reset font back to original
+      Font smallFont = Font.loadFont(
+              getClass().getResource("/fonts/PressStart2P-Regular.ttf").toExternalForm(),
+              8
+      );
+      gc.setFont(smallFont);
+    }
   }
 
   private void clearFullLines() {
@@ -136,6 +248,10 @@ public class TetrisPane extends Pane {
         removeLine(y);
         y++; // Recheck same row after shifting down
       }
+    }
+
+    if (linesCleared > 0) {
+      playOneShot("/music/LineClear.mp3");
     }
 
     score += linesCleared * 100;
