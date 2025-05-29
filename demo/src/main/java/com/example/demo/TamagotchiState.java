@@ -139,4 +139,12 @@ public class TamagotchiState {
     public void setSleepMenuActive(boolean sleepMenuActive) {
         isSleepMenuActive = sleepMenuActive;
     }
+
+    public void resetAllStages() {
+        setBabyActive(false);
+        setChildActive(false);
+        setTeenagerActive(false);
+        setAdultActive(false);
+    }
+
 }

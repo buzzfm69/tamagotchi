@@ -50,15 +50,6 @@ public class AnimationHelper {
         return moveDown(imageView, -distance, durationMs);
     }
 
-    // Idle Bewegung
-    //public TranslateTransition idle(ImageView imageView){
-    //    TranslateTransition idle = new TranslateTransition(Duration.millis(300), imageView);
-    //    idle.setByX(5);
-    //    idle.setCycleCount(Animation.INDEFINITE); // Endlosschleife
-    //    idle.setAutoReverse(true);
-    //    return idle;
-    //}
-
     public void animateStartSequence(ImageView imageView) {
         // 1. hüpfen 3x
         TranslateTransition jump1 = animateJump(imageView, 10, 3, 250);
@@ -102,5 +93,14 @@ public class AnimationHelper {
         if (idleAnimation != null) {
             idleAnimation.stop();
         }
+    }
+
+    public void startIdle(ImageView imageView){
+        idleAnimation = new TranslateTransition(Duration.millis(300), imageView);
+        idleAnimation.setByX(5);
+        idleAnimation.setByX(-5);
+        idleAnimation.setCycleCount(TranslateTransition.INDEFINITE);
+        idleAnimation.setAutoReverse(true);
+        idleAnimation.play();
     }
 }

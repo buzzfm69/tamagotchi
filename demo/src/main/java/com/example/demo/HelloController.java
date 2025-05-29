@@ -97,8 +97,8 @@ public class HelloController {
     @FXML
     public void handleClickButtonLeft(){
         // aktiviere Tamagotchi; 3x klicken
-        if(tamagotchiState.isMenuActive()){
-            buttonHandler.handleClickButtonLeftMenuStart(currentImage);
+        if(tamagotchiState.isMenuActive() && tamagotchiState.isEggActive()){
+            buttonHandler.buttonLeftActivateTamagotchi(currentImage);
         }
     }
 
@@ -106,25 +106,27 @@ public class HelloController {
     @FXML
     public void handleClickButtonRight(){
         if (tamagotchiState.isMenuActive() && !tamagotchiState.isEggActive()){
-            buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
+            buttonHandler.buttonRightSwitchMenu(menuFocusImages, menuImage);
         }
     }
 
-    // aktiviere Menü im Hauptmenü
+    // aktiviere & verlassen Menüs
     @FXML
     public void handleClickButtonMiddle(){
         switch (tamagotchiState.imageIndex){
             case 2:
                 if (tamagotchiState.isMenuActive()){
-                    buttonHandler.handleClickButtonMiddleMenu2(menuImage, currentImage);
+                    buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage);
+                } else {
+                    buttonHandler.buttonMiddleLeaveMenu2(menuImage, currentImage);
                 }
                 break;
 
             case 6:
                 if (tamagotchiState.isMenuActive()){
-                    buttonHandler.handleClickButtonMiddleMenu6(menuImage, currentImage, labelWeight, labelAge);
+                    buttonHandler.buttonMiddleActivateMenu6(menuImage, currentImage, labelWeight, labelAge);
                 } else{
-                    buttonHandler.handleButtonMiddleWeightMenu(menuImage, currentImage, labelWeight, labelAge);
+                    buttonHandler.buttonMiddleLeaveMenu6(menuImage, currentImage, labelWeight, labelAge);
                 }
                 break;
         }
