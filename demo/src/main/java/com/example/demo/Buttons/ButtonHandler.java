@@ -9,12 +9,13 @@ public class ButtonHandler {
     private final TamagotchiState tamagotchiState;
     AnimationHelper animationHelper = new AnimationHelper();
 
+
     public ButtonHandler(TamagotchiState tamagotchiState) {
         this.tamagotchiState = tamagotchiState;
     }
 
     public void handleClickButtonRightMenu(String[] menuFocusImages, ImageView menuImage){
-        if (tamagotchiState.isMenuActive) {
+        if (tamagotchiState.isMenuActive()) {
             // Bildpfad laden
             String path = menuFocusImages[tamagotchiState.imageIndex];
 
@@ -27,27 +28,45 @@ public class ButtonHandler {
         }
     }
 
-    public void handleClickButtonLeftMenu(ImageView eggImage){
+    public void handleClickButtonLeftMenuStart(ImageView eggImage){
         tamagotchiState.clickCountMenu++;
 
-        if (tamagotchiState.clickCountMenu ==3){
-            animationHelper.animateStartSequence(eggImage); //Ei Sequenz starten
+        if (tamagotchiState.isMenuActive()){
+            if (tamagotchiState.clickCountMenu ==3){
+                animationHelper.animateStartSequence(eggImage); //Ei Sequenz starten
 
-            // 2. Nach der Animation Bild ändern
-            // Verzögerung hinzufügen, damit das neue Bild nicht sofort kommt
-            new Thread(() -> {
-                try {
-                    Thread.sleep(1000); // Warten, bis die Animation sichtbar ist
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                // 2. Nach der Animation Bild ändern
+                // Verzögerung hinzufügen, damit das neue Bild nicht sofort kommt
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(1000); // Warten, bis die Animation sichtbar ist
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                // UI-Update zurück im JavaFX-Thread
-                javafx.application.Platform.runLater(() -> {
-                    Image newImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
-                    eggImage.setImage(newImage);
-                });
-            }).start();
+                    // UI-Update zurück im JavaFX-Thread
+                    javafx.application.Platform.runLater(() -> {
+                        Image babyImage = new Image(getClass().getResource("/images/Baby.png").toExternalForm());
+                        eggImage.setImage(babyImage);
+                    });
+                    tamagotchiState.setBabyActive(true);
+                }).start();
+            }
+        }
+    }
+
+    public void handleClickButtonMiddleMenu(ImageView menuImage, ImageView eggImage){
+        if (tamagotchiState.imageIndex == 6){
+            Image weightDisplayImage = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
+            menuImage.setImage(weightDisplayImage);
+
+            tamagotchiState.setMenuActive(false);
+            tamagotchiState.setWeightMenuActive(true);
+
+            if (tamagotchiState.isWeightMenuActive()){
+                tamagotchiState.setBabyActive(false);
+                eggImage.setVisible(false);
+            }
         }
     }
 }

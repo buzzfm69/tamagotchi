@@ -15,7 +15,11 @@ public class HelloController {
     @FXML
     private ImageView menuImage;
     @FXML
+    private ImageView babyImage;
+    @FXML
     private ImageView menuFocusFoodImage;
+    @FXML
+    private  ImageView displayWeightImage;
 
     // Buttons
     @FXML
@@ -45,10 +49,14 @@ public class HelloController {
 
 
     @FXML
-    public void intialize() {
+    public void initialize() {
         Image imageBackground = new Image(getClass().getResource("/images/TamagotchiUI.png").toExternalForm());
-
         tamagotchiBackground.setImage(imageBackground);
+
+        Image imageDisplayWeight = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
+        displayWeightImage.setImage(imageDisplayWeight);
+
+        displayWeightImage.setVisible(false);
         eggImage.setVisible(false);
 
         buttonLeft.setOpacity(0);
@@ -77,16 +85,27 @@ public class HelloController {
         // Start-Button ausblenden
         startButton.setVisible(false);
 
-        tamagotchiState.isMenuActive = true;
+        tamagotchiState.setMenuActive(true);
     }
 
     @FXML
     public void handleClickButtonLeft(){
-        buttonHandler.handleClickButtonLeftMenu(eggImage);
+        if(tamagotchiState.isMenuActive()){
+            buttonHandler.handleClickButtonLeftMenuStart(eggImage);
+        }
     }
 
     @FXML
     public void handleClickButtonRight(){
-        buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
+        if (tamagotchiState.isMenuActive()){
+            buttonHandler.handleClickButtonRightMenu(menuFocusImages, menuImage);
+        }
+    }
+
+    @FXML
+    public void handleClickButtonMiddle(){
+        if (tamagotchiState.isMenuActive()){
+            buttonHandler.handleClickButtonMiddleMenu(menuImage, eggImage);
+        }
     }
 }

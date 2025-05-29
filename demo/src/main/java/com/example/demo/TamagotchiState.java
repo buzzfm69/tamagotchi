@@ -1,7 +1,11 @@
 package com.example.demo;
 
 public class TamagotchiState {
-    public boolean isMenuActive;
+    private boolean isMenuActive;
+    private boolean isWeightMenuActive;
+
+    private boolean isBabyActive;
+
     public int imageIndex = 0;
     public int clickCountMenu = 0;
 
@@ -27,5 +31,21 @@ public class TamagotchiState {
 
     public void setClickCountMenu(int clickCountMenu) {
         this.clickCountMenu = clickCountMenu;
+    }
+
+    public boolean isWeightMenuActive() {
+        return isWeightMenuActive;
+    }
+
+    public void setWeightMenuActive(boolean weightMenuActive) {
+        isWeightMenuActive = weightMenuActive;
+    }
+
+    public boolean isBabyActive() {
+        return isBabyActive;
+    }
+
+    public void setBabyActive(boolean babyActive) {
+        isBabyActive = babyActive;
     }
 }
