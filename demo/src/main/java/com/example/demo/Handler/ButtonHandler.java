@@ -1,24 +1,29 @@
 package com.example.demo.Handler;
 
 import com.example.demo.LifeStage;
+import com.example.demo.Menu.Game.TetrisPane;
 import com.example.demo.Menu.Menu6;
 import com.example.demo.TamagotchiState;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class ButtonHandler {
     private final TamagotchiState tamagotchiState;
     private final AnimationHelper animationHelper;
     private final StateHandler stateHandler;
     private final Menu6 menu6;
+    private final TetrisPane tetrisPane;
 
-    public ButtonHandler(TamagotchiState tamagotchiState, AnimationHelper animationHelper, StateHandler stateHandler) {
+    public ButtonHandler(TamagotchiState tamagotchiState, AnimationHelper animationHelper, StateHandler stateHandler, TetrisPane tetrisPane) {
         this.tamagotchiState = tamagotchiState;
         this.animationHelper = animationHelper;
         this.stateHandler = stateHandler;
         this.menu6 = new Menu6(tamagotchiState);
+        this.tetrisPane = tetrisPane;
     }
+
 
     // Button Rechts Hauptmenüs, Menüs Switchen
     public void buttonRightSwitchMenu(String[] menuFocusImages, ImageView menuImage){
@@ -111,6 +116,30 @@ public class ButtonHandler {
         animationHelper.startIdle(currentImage);
         animationHelper.stopSleepLabelAnimation();
         labelSleep.setVisible(false);
+    }
+
+    // aktiviere Menü 3 = Game Menu
+    public void buttonMiddleActivateMenu3(ImageView currentImage, AnchorPane gamePane){
+        tamagotchiState.setMenuActive(false);
+        tamagotchiState.setGameMenuActive(true);
+        gamePane.setVisible(true);
+        gamePane.getChildren().add(tetrisPane);
+        tetrisPane.startGame();
+
+
+        currentImage.setVisible(false);
+    }
+
+    // verlasse Menü 3 = Game Menu
+    public void buttonMiddleLeaveMenu3(ImageView currentImage, AnchorPane gamePane){
+        tamagotchiState.setMenuActive(true);
+        tamagotchiState.setGameMenuActive(false);
+        gamePane.setVisible(false);
+        gamePane.getChildren().remove(tetrisPane);
+        tetrisPane.stopGame();
+
+
+        currentImage.setVisible(true);
     }
 
     // aktiviere Menü 6 = Weight Menü

@@ -1,5 +1,7 @@
 package com.example.demo.Menu.Game;
 
+import com.example.demo.LifeStage;
+import com.example.demo.TamagotchiState;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
@@ -31,10 +33,16 @@ public class TetrisPane extends Pane {
   private int tick = 0;
   private int score = 0;
   private MediaPlayer mediaPlayer;
-  private boolean gameOver = false;
-  private final ImageView tamagotchiView;
+  public boolean gameOver = false;
+  private ImageView tamagotchiView;
+  private final Image tamagotchiBabyGif = new Image(getClass().getResource("/gifs/Baby.gif").toExternalForm());
+  private final Image tamagotchiChildGif = new Image(getClass().getResource("/gifs/Child.gif").toExternalForm());
+  private final Image tamagotchiTeenagerGif = new Image(getClass().getResource("/gifs/Teenager.gif").toExternalForm());
+  private final Image tamagotchiAdultGif = new Image(getClass().getResource("/gifs/Adult.gif").toExternalForm());
+  private final TamagotchiState state;
 
-  public TetrisPane() {
+  public TetrisPane(TamagotchiState tamagotchiState) {
+    this.state = tamagotchiState;
     canvas = new Canvas((COLS + 10) * TILE_SIZE, ROWS * TILE_SIZE);
     gc = canvas.getGraphicsContext2D();
     this.getChildren().add(canvas);
@@ -44,18 +52,49 @@ public class TetrisPane extends Pane {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    playMusic("/music/Tetris.mp3");
-    //TODO: make it different depending on the LifeStage
-    Image tamagotchiGif = new Image(getClass().getResource("/gifs/Child.gif").toExternalForm());
-    tamagotchiView = new ImageView(tamagotchiGif);
-    tamagotchiView.setLayoutX((COLS + 5) * TILE_SIZE); // position right of game
-    tamagotchiView.setLayoutY(45);                     // adjust Y as needed
-    tamagotchiView.setFitWidth(30);                   // resize if needed
-    tamagotchiView.setPreserveRatio(true);
-    this.getChildren().add(tamagotchiView);
 
-    spawnNewPiece();
-    startGameLoop();
+  }
+
+  private Image selectGif(LifeStage stage) {
+    return switch (stage) {
+      case BABY -> tamagotchiBabyGif;
+      case CHILD -> tamagotchiChildGif;
+      case TEEN -> tamagotchiTeenagerGif;
+      case ADULT -> tamagotchiAdultGif;
+    };
+  }
+
+  public void startGame() {
+    if (!gameOver) {
+      score = 0;
+      tick = 0;
+      clearGrid();
+      spawnNewPiece();
+      playMusic("/music/Tetris.mp3");
+      gameLoop.start();
+      tamagotchiView = new ImageView(selectGif(state.getCurrentStage()));
+      tamagotchiView.setLayoutX((COLS + 5) * TILE_SIZE); // position right of game
+      tamagotchiView.setLayoutY(45);                     // adjust Y as needed
+      tamagotchiView.setFitWidth(30);                   // resize if needed
+      tamagotchiView.setPreserveRatio(true);
+      this.getChildren().add(tamagotchiView);
+    }
+  }
+
+  public void stopGame() {
+    gameLoop.stop();
+    stopMusic();
+    gameOver = false;
+    clearGrid();
+    render(); // force screen to update
+  }
+
+  private void clearGrid() {
+    for (int y = 0; y < ROWS; y++) {
+      for (int x = 0; x < COLS; x++) {
+        grid[y][x] = 0;
+      }
+    }
   }
 
   private void playMusic(String path) {
@@ -88,21 +127,18 @@ public class TetrisPane extends Pane {
     }
   }
 
-  private void startGameLoop() {
-    AnimationTimer timer = new AnimationTimer() {
-      @Override
-      public void handle(long now) {
-        if (!gameOver) {
-          tick++;
-          if (tick % 30 == 0) {
-            moveDown();
-          }
-          render();
+  private final AnimationTimer gameLoop = new AnimationTimer() {
+    @Override
+    public void handle(long now) {
+      if (!gameOver) {
+        tick++;
+        if (tick % 30 == 0) {
+          moveDown();
         }
+        render();
       }
-    };
-    timer.start();
-  }
+    }
+  };
 
   private void moveDown() {
     if (canMove(currentPiece, currentPiece.x, currentPiece.y + 1)) {
