@@ -1,9 +1,12 @@
 package com.example.demo;
 
+import com.example.demo.Menu.Menu6;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class TamagotchiState {
@@ -34,102 +37,6 @@ public class TamagotchiState {
     public int health = 100;
 
     private LifeStage currentStage;
-    private Timeline hungerTimer;
-
-    // Hunger
-    public void decreaseHungry(int amount) {
-        hungry -= amount;
-        if (hungry < 0) hungry = 0;
-    }
-    public void increaseHungry(int amount){
-        hungry += amount;
-        if (hungry > 100) hungry = 100;
-    }
-    public void updateHungryDisplay(Label labelHungry) {
-        labelHungry.setText("Hunger: " + hungry+ " / 100");
-    }
-
-
-    // Sauberkeit
-    public void decreaseClean(int amount) {
-        clean -= amount;
-        if (clean < 0) clean = 0;
-    }
-    public void increaseClean(int amount) {
-        clean += amount;
-        if (clean > 100) clean = 100;
-    }
-    public void updateSauberkeitClean(Label labelClean) {
-        labelClean.setText("Sauberkeit: " + clean + " / 100");
-    }
-
-
-    // Gesundheit
-    public void decreaseHealth(int amount) {
-        health -= amount;
-        if (health < 0) health = 0;
-    }
-    public void increaseHealth(int amount) {
-        health += amount;
-        if (health > 100) health = 100;
-    }
-    public void updateHealthtDisplay(Label labelHealth) {
-        labelHealth.setText("Gesundheit: " + health + " / 100");
-    }
-
-
-    // Stimmung
-    public void decreaseHappiness(int amount) {
-        happiness -= amount;
-        if (happiness < 0) happiness = 0;
-    }
-    public void increaseHappiness(int amount) {
-        happiness += amount;
-        if (happiness > 100) happiness = 100;
-    }
-    public void updateHappinessDisplay(Label labelHappiness) {
-        labelHappiness.setText("Stimmung: " + age + " / 100");
-    }
-
-
-    // Gewicht
-    public void decreaseWeight(int amount) {
-        weight -= amount;
-        if (weight < 0) weight = 0;
-    }
-    public void increaseWeight(int amount) {
-        weight += amount;
-        if (weight > 100) weight = 100;
-    }
-    public void updateWeightDisplay(Label labelWeight) {
-        labelWeight.setText("Gewicht: " + weight + " / 100");
-    }
-
-
-    // Alter
-    public void decreaseAge(int amount) {
-        age -= amount;
-        if (age < 0) age = 0;
-    }
-    public void increaseAge(int amount) {
-        age += amount;
-        if (age > 100) age = 100;
-    }
-    public void updateAge(Label labelAge) {
-        labelAge.setText("Alter: " + age + " / 100");
-    }
-
-
-    public void startStateTimer(Label labelHungry) {
-        Timeline stateTimer = new Timeline(
-                new KeyFrame(Duration.seconds(10), e -> {
-                    decreaseHungry(10);
-                    updateHungryDisplay(labelHungry);
-                })
-        );
-        stateTimer.setCycleCount(Animation.INDEFINITE);
-        stateTimer.play();
-    }
 
     public LifeStage getCurrentStage() {
         return currentStage;

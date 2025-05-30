@@ -1,15 +1,13 @@
 package com.example.demo;
 
-import com.example.demo.Buttons.ButtonHandler;
+import com.example.demo.Handler.AnimationHelper;
+import com.example.demo.Handler.ButtonHandler;
+import com.example.demo.Handler.StateHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
-
-import java.net.URL;
 
 public class HelloController {
     // Images
@@ -46,10 +44,10 @@ public class HelloController {
     @FXML
     private Label labelHappiness;
 
-
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
-    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper);
+    private final StateHandler stateHandler = new StateHandler(this.tamagotchiState);
+    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper, this.stateHandler);
 
     private final String[] menuFocusImages = {
             "/images/MenuFocusFood.png",
@@ -85,7 +83,7 @@ public class HelloController {
         buttonRight.setOpacity(0);
         buttonRight.setMouseTransparent(false);
 
-        tamagotchiState.startStateTimer(labelHungry);
+        stateHandler.startStateTimer(menuImage);
         updateWeightDisplay();
     }
 

@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.Handler;
 
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
