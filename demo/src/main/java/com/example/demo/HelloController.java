@@ -3,11 +3,15 @@ package com.example.demo;
 import com.example.demo.Handler.AnimationHelper;
 import com.example.demo.Handler.ButtonHandler;
 import com.example.demo.Handler.StateHandler;
+import com.example.demo.Menu.Game.TetrisPane;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import java.net.URL;
 
 public class HelloController {
     // Images
@@ -44,10 +48,15 @@ public class HelloController {
     @FXML
     private Label labelHappiness;
 
+    //Areas
+    @FXML
+    private AnchorPane gamePane;
+
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
     private final StateHandler stateHandler = new StateHandler(this.tamagotchiState);
-    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper, this.stateHandler);
+    private final TetrisPane tetrisPane = new TetrisPane(tamagotchiState);
+    private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper, this.stateHandler, this.tetrisPane);
 
     private final String[] menuFocusImages = {
             "/images/MenuFocusFood.png",
@@ -123,6 +132,11 @@ public class HelloController {
         if(tamagotchiState.isMenuActive() && tamagotchiState.isEggActive()){
             buttonHandler.buttonLeftActivateTamagotchi(currentImage);
         }
+        if (tamagotchiState.isGameMenuActive()) {
+            if (tetrisPane != null) {
+                tetrisPane.moveLeft();
+            }
+        }
     }
 
     @FXML
@@ -134,6 +148,11 @@ public class HelloController {
         // switchen im Menü 6
         if (tamagotchiState.isWeightMenuActive()){
             buttonHandler.buttonRightSwitchSubMenu6(menuImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
+        }
+        if (tamagotchiState.isGameMenuActive()) {
+            if (tetrisPane != null) {
+                tetrisPane.moveRight();
+            }
         }
     }
 
@@ -147,6 +166,16 @@ public class HelloController {
                     buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage, labelSleep);
                 } else {
                     buttonHandler.buttonMiddleLeaveMenu2(menuImage, currentImage, labelSleep);
+                }
+                break;
+
+            case 3:
+                if (tamagotchiState.isMenuActive()){
+                    buttonHandler.buttonMiddleActivateMenu3(currentImage, gamePane);
+                } else if (tetrisPane.gameOver) {
+                    buttonHandler.buttonMiddleLeaveMenu3(currentImage, gamePane);
+                } else {
+                    tetrisPane.rotateCurrentPiece();
                 }
                 break;
 
