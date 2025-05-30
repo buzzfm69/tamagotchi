@@ -45,7 +45,8 @@ public class TetrisPane extends Pane {
       e.printStackTrace();
     }
     playMusic("/music/Tetris.mp3");
-    Image tamagotchiGif = new Image(getClass().getResource("/gifs/Adult.gif").toExternalForm());
+    //TODO: make it different depending on the LifeStage
+    Image tamagotchiGif = new Image(getClass().getResource("/gifs/Child.gif").toExternalForm());
     tamagotchiView = new ImageView(tamagotchiGif);
     tamagotchiView.setLayoutX((COLS + 5) * TILE_SIZE); // position right of game
     tamagotchiView.setLayoutY(45);                     // adjust Y as needed
