@@ -38,7 +38,14 @@ public class HelloController {
     @FXML
     private Label labelSleep;
     @FXML
-    private Label labelHunger;
+    private Label labelHungry;
+    @FXML
+    private Label labelClean;
+    @FXML
+    private Label labelHealth;
+    @FXML
+    private Label labelHappiness;
+
 
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
@@ -56,6 +63,15 @@ public class HelloController {
             "/images/MenuNoFocus.png"
     };
 
+    private final String[] menu2switchImages = {
+            "/images/0_5Heart.png",
+            "/images/1Heart.png",
+            "/images/1_5Heart",
+            "/images/2Heart.png",
+            "/images/2_5Heart.png",
+            "/images/3Heart.png"
+    };
+
 
     @FXML
     public void initialize() {
@@ -69,7 +85,7 @@ public class HelloController {
         buttonRight.setOpacity(0);
         buttonRight.setMouseTransparent(false);
 
-        tamagotchiState.startStateTimer(labelHunger);
+        tamagotchiState.startStateTimer(labelHungry);
         updateWeightDisplay();
     }
 
@@ -111,11 +127,15 @@ public class HelloController {
         }
     }
 
-    // switche Menüs im Hauptmenü
     @FXML
     public void handleClickButtonRight(){
+        // switche Menüs im Hauptmenü
         if (tamagotchiState.isMenuActive() && !tamagotchiState.isEggActive()){
             buttonHandler.buttonRightSwitchMenu(menuFocusImages, menuImage);
+        }
+        // switchen im Menü 6
+        if (tamagotchiState.isWeightMenuActive()){
+            buttonHandler.buttonRightSwitchSubMenu6(menuImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
         }
     }
 
@@ -123,6 +143,7 @@ public class HelloController {
     @FXML
     public void handleClickButtonMiddle(){
         switch (tamagotchiState.imageIndex){
+            //Menü
             case 2:
                 if (tamagotchiState.isMenuActive()){
                     buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage, labelSleep);
@@ -135,7 +156,7 @@ public class HelloController {
                 if (tamagotchiState.isMenuActive()){
                     buttonHandler.buttonMiddleActivateMenu6(menuImage, currentImage, labelWeight, labelAge);
                 } else{
-                    buttonHandler.buttonMiddleLeaveMenu6(menuImage, currentImage, labelWeight, labelAge);
+                    buttonHandler.buttonMiddleLeaveMenu6(menuImage, currentImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
                 }
                 break;
         }

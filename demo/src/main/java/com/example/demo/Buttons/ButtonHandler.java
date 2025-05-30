@@ -2,6 +2,7 @@ package com.example.demo.Buttons;
 
 import com.example.demo.AnimationHelper;
 import com.example.demo.LifeStage;
+import com.example.demo.Menu.Menu6;
 import com.example.demo.TamagotchiState;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,6 +11,7 @@ import javafx.scene.image.ImageView;
 public class ButtonHandler {
     private final TamagotchiState tamagotchiState;
     private final AnimationHelper animationHelper;
+    private final Menu6 menu6 = new Menu6();
 
     public ButtonHandler(TamagotchiState tamagotchiState, AnimationHelper animationHelper) {
         this.tamagotchiState = tamagotchiState;
@@ -61,6 +63,22 @@ public class ButtonHandler {
         }
     }
 
+    // Button Rechts Menü6 Switch
+    public void buttonRightSwitchSubMenu6(
+            ImageView menuImage,
+            Label labelWeight,
+            Label labelAge,
+            Label labelHungry,
+            Label labelClean,
+            Label labelHealth,
+            Label labelHappiness){
+        tamagotchiState.subMenu6Index = (tamagotchiState.subMenu6Index + 1) % 5;
+        labelWeight.setVisible(false);
+        labelAge.setVisible(false);
+        menu6.showSubMenu6(tamagotchiState.subMenu6Index, menuImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
+
+    }
+
     // Linker Button beim Start, 3x klicken zum aktivieren
     public void buttonLeftActivateTamagotchi(ImageView currentImage){
         tamagotchiState.clickCountMenu++;
@@ -93,6 +111,7 @@ public class ButtonHandler {
 
     // aktiviere Menü 2 = Sleep Menü
     public void buttonMiddleActivateMenu2(ImageView menuImage, ImageView currentImage, Label labelSleep){
+        animationHelper.stopIdle();
         tamagotchiState.setSleepMenuActive(true);
         tamagotchiState.setMenuActive(false);
         tamagotchiState.setSleeping(true);
@@ -101,7 +120,7 @@ public class ButtonHandler {
         menuImage.setImage(menuSleepOnImage);
 
         labelSleep.setVisible(true);
-        animationHelper.stopIdle();
+        //animationHelper.stopIdle();
         animationHelper.animateSleepLabel(labelSleep);
         changeStateAndImage(currentImage);
     }
@@ -127,6 +146,8 @@ public class ButtonHandler {
             Image weightDisplayImage = new Image(getClass().getResource("/images/DisplayWeight.png").toExternalForm());
             menuImage.setImage(weightDisplayImage);
 
+            tamagotchiState.subMenu6Index = 4;
+
             tamagotchiState.setMenuActive(false);
             tamagotchiState.setWeightMenuActive(true);
             tamagotchiState.resetAllStates();
@@ -139,11 +160,12 @@ public class ButtonHandler {
     }
 
     // verlasse Menü 6
-    public void buttonMiddleLeaveMenu6(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge){
+    public void buttonMiddleLeaveMenu6(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge, Label labelHungry, Label labelClean, Label labelHealth, Label labelHappiness){
         Image imageMenuFocusWeight = new Image(getClass().getResource("/images/MenuFocusWeight.png").toExternalForm());
         menuImage.setImage(imageMenuFocusWeight);
         labelWeight.setVisible(false);
         labelAge.setVisible(false);
+        menu6.hideSubMenu6(labelHungry, labelClean, labelHealth, labelHappiness);
 
         tamagotchiState.setWeightMenuActive(false);
         tamagotchiState.setMenuActive(true);

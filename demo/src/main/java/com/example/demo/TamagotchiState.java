@@ -22,79 +22,109 @@ public class TamagotchiState {
     private boolean isSleeping;
 
     public int imageIndex = 0;
+    public int subMenu6Index = -1; // -1 für "noch im WeightMenü"
     public int clickCountMenu = 0;
 
     public int weight = 1;
     public int age = 1;
 
-    public int hunger = 100;
-    public int sauberkeit = 100;
-    public int stimmung = 100;
-    public int gesundheit = 100;
+    public int hungry = 100;
+    public int clean = 100;
+    public int happiness = 100;
+    public int health = 100;
 
     private LifeStage currentStage;
     private Timeline hungerTimer;
 
     // Hunger
-    public void decreaseHunger(int amount) {
-        hunger -= amount;
-        if (hunger < 0) hunger = 0;
+    public void decreaseHungry(int amount) {
+        hungry -= amount;
+        if (hungry < 0) hungry = 0;
     }
-    public void increaseHunger(int amount){
-        hunger += amount;
-        if (hunger > 100) hunger = 100;
+    public void increaseHungry(int amount){
+        hungry += amount;
+        if (hungry > 100) hungry = 100;
     }
-    public void updateHungerDisplay(Label labelHunger) {
-        labelHunger.setText("Hunger: " + hunger + " / 100");
+    public void updateHungryDisplay(Label labelHungry) {
+        labelHungry.setText("Hunger: " + hungry+ " / 100");
     }
+
 
     // Sauberkeit
-    public void decreaseSauberkeit(int amount) {
-        sauberkeit -= amount;
-        if (sauberkeit < 0) sauberkeit = 0;
+    public void decreaseClean(int amount) {
+        clean -= amount;
+        if (clean < 0) clean = 0;
     }
-    public void increaseSauberkeit(int amount) {
-        sauberkeit += amount;
-        if (sauberkeit > 100) sauberkeit = 100;
+    public void increaseClean(int amount) {
+        clean += amount;
+        if (clean > 100) clean = 100;
     }
-    public void updateSauberkeitDisplay(Label labelSauberkeit) {
-        labelSauberkeit.setText("Sauberkeit: " + sauberkeit + " / 100");
+    public void updateSauberkeitClean(Label labelClean) {
+        labelClean.setText("Sauberkeit: " + clean + " / 100");
     }
+
 
     // Gesundheit
-    public void decreaseGesundheit(int amount) {
-        gesundheit -= amount;
-        if (gesundheit < 0) gesundheit = 0;
+    public void decreaseHealth(int amount) {
+        health -= amount;
+        if (health < 0) health = 0;
     }
-    public void increaseGesundheit(int amount) {
-        gesundheit += amount;
-        if (gesundheit > 100) gesundheit = 100;
+    public void increaseHealth(int amount) {
+        health += amount;
+        if (health > 100) health = 100;
     }
-    public void updateGesundheitDisplay(Label labelGesundheit) {
-        labelGesundheit.setText("Gesundheit: " + gesundheit + " / 100");
+    public void updateHealthtDisplay(Label labelHealth) {
+        labelHealth.setText("Gesundheit: " + health + " / 100");
     }
+
 
     // Stimmung
-    public void decreaseStimmung(int amount) {
-        stimmung -= amount;
-        if (stimmung < 0) stimmung = 0;
+    public void decreaseHappiness(int amount) {
+        happiness -= amount;
+        if (happiness < 0) happiness = 0;
     }
-    public void increaseStimmung(int amount) {
-        stimmung += amount;
-        if (stimmung > 100) stimmung = 100;
+    public void increaseHappiness(int amount) {
+        happiness += amount;
+        if (happiness > 100) happiness = 100;
     }
-    public void updateStimmungDisplay(Label labelStimmung) {
-        labelStimmung.setText("Stimmung: " + stimmung + " / 100");
+    public void updateHappinessDisplay(Label labelHappiness) {
+        labelHappiness.setText("Stimmung: " + age + " / 100");
     }
 
-    // Gewicht + Alter
-    //TODO: decrease, increase, update
 
-    public void startStateTimer(Label labelHunger) {
+    // Gewicht
+    public void decreaseWeight(int amount) {
+        weight -= amount;
+        if (weight < 0) weight = 0;
+    }
+    public void increaseWeight(int amount) {
+        weight += amount;
+        if (weight > 100) weight = 100;
+    }
+    public void updateWeightDisplay(Label labelWeight) {
+        labelWeight.setText("Gewicht: " + weight + " / 100");
+    }
+
+
+    // Alter
+    public void decreaseAge(int amount) {
+        age -= amount;
+        if (age < 0) age = 0;
+    }
+    public void increaseAge(int amount) {
+        age += amount;
+        if (age > 100) age = 100;
+    }
+    public void updateAge(Label labelAge) {
+        labelAge.setText("Alter: " + age + " / 100");
+    }
+
+
+    public void startStateTimer(Label labelHungry) {
         Timeline stateTimer = new Timeline(
                 new KeyFrame(Duration.seconds(10), e -> {
-                    decreaseHunger(10);
-                    updateHungerDisplay(labelHunger);
+                    decreaseHungry(10);
+                    updateHungryDisplay(labelHungry);
                 })
         );
         stateTimer.setCycleCount(Animation.INDEFINITE);
