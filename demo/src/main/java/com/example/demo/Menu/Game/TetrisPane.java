@@ -4,6 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -29,6 +32,7 @@ public class TetrisPane extends Pane {
   private int score = 0;
   private MediaPlayer mediaPlayer;
   private boolean gameOver = false;
+  private final ImageView tamagotchiView;
 
   public TetrisPane() {
     canvas = new Canvas((COLS + 10) * TILE_SIZE, ROWS * TILE_SIZE);
@@ -41,6 +45,13 @@ public class TetrisPane extends Pane {
       e.printStackTrace();
     }
     playMusic("/music/Tetris.mp3");
+    Image tamagotchiGif = new Image(getClass().getResource("/gifs/Adult.gif").toExternalForm());
+    tamagotchiView = new ImageView(tamagotchiGif);
+    tamagotchiView.setLayoutX((COLS + 5) * TILE_SIZE); // position right of game
+    tamagotchiView.setLayoutY(45);                     // adjust Y as needed
+    tamagotchiView.setFitWidth(30);                   // resize if needed
+    tamagotchiView.setPreserveRatio(true);
+    this.getChildren().add(tamagotchiView);
 
     spawnNewPiece();
     startGameLoop();
@@ -228,6 +239,11 @@ public class TetrisPane extends Pane {
               8
       );
       gc.setFont(smallFont);
+      // 👇 Hide Tamagotchi
+      tamagotchiView.setVisible(false);
+    } else {
+      // 👇 Show Tamagotchi during play
+      tamagotchiView.setVisible(true);
     }
   }
 
