@@ -87,6 +87,7 @@ public class TetrisPane extends Pane {
     gameOver = false;
     clearGrid();
     render(); // force screen to update
+    this.getChildren().remove(tamagotchiView);
   }
 
   private void clearGrid() {
