@@ -21,6 +21,16 @@ public class HelloController {
     private ImageView currentImage;
     @FXML
     private ImageView menuImage;
+    @FXML
+    private ImageView meat;
+    @FXML
+    private ImageView cherry;
+    @FXML
+    private ImageView bred;
+    @FXML
+    private ImageView selector;
+    @FXML
+    private ImageView foodBeingEaten;
 
     // Buttons
     @FXML
@@ -51,6 +61,8 @@ public class HelloController {
     //Areas
     @FXML
     private AnchorPane gamePane;
+
+
 
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
@@ -154,6 +166,9 @@ public class HelloController {
                 tetrisPane.moveRight();
             }
         }
+        if (tamagotchiState.isEatingMenuActive()) {
+            buttonHandler.buttonRightSwitchSubMenu1(selector);
+        }
     }
 
     // aktiviere & verlassen Menüs
@@ -161,6 +176,16 @@ public class HelloController {
     public void handleClickButtonMiddle(){
         switch (tamagotchiState.imageIndex){
             //Menü
+            case 1:
+                if (tamagotchiState.isMenuActive()){
+                    buttonHandler.buttonMiddleActivateMenu1(currentImage, meat, cherry, bred, selector, foodBeingEaten);
+                } else if (tamagotchiState.isEatingMenuActive() && tamagotchiState.isEating()) {
+                    buttonHandler.buttonMiddleLeaveMenu1(currentImage, meat, cherry, bred, selector, foodBeingEaten);
+                } else if (!tamagotchiState.isEating()){
+                    buttonHandler.handleEating(foodBeingEaten, selector, currentImage);
+                }
+                break;
+
             case 2:
                 if (tamagotchiState.isMenuActive()){
                     buttonHandler.buttonMiddleActivateMenu2(menuImage, currentImage, labelSleep);
