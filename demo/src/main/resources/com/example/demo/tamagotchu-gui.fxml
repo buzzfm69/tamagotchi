@@ -48,6 +48,31 @@
             <Image url="@../../../images/Ei.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="meat" fitHeight="17.0" fitWidth="17.0" layoutX="193.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../images/Meat.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="cherry" fitHeight="17.0" fitWidth="17.0" layoutX="215.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../images/Cherry.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bred" fitHeight="17.0" fitWidth="17.0" layoutX="170.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../images/Bred.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="selector" fitHeight="17.0" fitWidth="17.0" layoutX="193.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../images/Selector.PNG" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="foodBeingEaten" fitHeight="30.0" fitWidth="30.0" layoutX="235.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../gifs/Meat.GIF" />
+         </image>
+      </ImageView>
       <Label fx:id="labelAge" layoutX="201.0" layoutY="191.0" styleClass="pixel-font" text="0 yr" visible="false">
          <font>
             <Font name="Press Start 2P Regular" size="17.0" />

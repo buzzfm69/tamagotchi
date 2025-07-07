@@ -13,6 +13,7 @@ public class TamagotchiState {
     private boolean isMenuActive;
     private boolean isWeightMenuActive = false;
     private boolean isGameMenuActive;
+    private boolean isEatingMenuActive;
     private boolean isSleepMenuActive = false;
     private boolean isStartButtonActive;
 
@@ -22,6 +23,7 @@ public class TamagotchiState {
     private boolean isTeenagerActive;
     private boolean isAdultActive;
 
+    private boolean isEating;
     private boolean isSleeping;
 
     public int imageIndex = 0;
@@ -118,6 +120,14 @@ public class TamagotchiState {
         isGameMenuActive = gameMenuActive;
     }
 
+    public boolean isEatingMenuActive() {
+        return isEatingMenuActive;
+    }
+
+    public void setEatingMenuActive(boolean eatingMenuActive) {
+        isEatingMenuActive = eatingMenuActive;
+    }
+
     public int getWeight() {
         return weight;
     }
@@ -179,5 +189,13 @@ public class TamagotchiState {
 
     public void setStartButtonActive(boolean startButtonActive) {
         isStartButtonActive = startButtonActive;
+    }
+
+    public boolean isEating() {
+        return isEating;
+    }
+
+    public void setEating(boolean eating) {
+        isEating = eating;
     }
 }

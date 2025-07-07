@@ -2,6 +2,7 @@ package com.example.demo.Handler;
 
 import com.example.demo.LifeStage;
 import com.example.demo.Menu.Game.TetrisPane;
+import com.example.demo.Menu.Menu1;
 import com.example.demo.Menu.Menu6;
 import com.example.demo.TamagotchiState;
 import javafx.scene.control.Label;
@@ -15,12 +16,14 @@ public class ButtonHandler {
     private final StateHandler stateHandler;
     private final Menu6 menu6;
     private final TetrisPane tetrisPane;
+    private final Menu1 menu1;
 
     public ButtonHandler(TamagotchiState tamagotchiState, AnimationHelper animationHelper, StateHandler stateHandler, TetrisPane tetrisPane) {
         this.tamagotchiState = tamagotchiState;
         this.animationHelper = animationHelper;
         this.stateHandler = stateHandler;
         this.menu6 = new Menu6(tamagotchiState);
+        this.menu1 = new Menu1(tamagotchiState);
         this.tetrisPane = tetrisPane;
     }
 
@@ -56,6 +59,17 @@ public class ButtonHandler {
 
     }
 
+    // Button Rechts Menü1 Switch
+    public void buttonRightSwitchSubMenu1(ImageView selector){
+        if (selector.getLayoutX() == menu1.getSelectorXPosition1()) {
+            selector.setLayoutX(menu1.getSelectorXPosition2());
+        } else if (selector.getLayoutX() == menu1.getSelectorXPosition2()) {
+            selector.setLayoutX(menu1.getSelectorXPosition3());
+        } else {
+            selector.setLayoutX(menu1.getSelectorXPosition1());
+        }
+    }
+
     // Linker Button beim Start, 3x klicken zum aktivieren
     public void buttonLeftActivateTamagotchi(ImageView currentImage){
         tamagotchiState.clickCountMenu++;
@@ -84,6 +98,35 @@ public class ButtonHandler {
                 }).start();
             }
         }
+    }
+
+    // aktiviere Menü 1 = Eating Menu
+    public void buttonMiddleActivateMenu1(ImageView currentImage, ImageView meat, ImageView cherry, ImageView bred, ImageView selector, ImageView foodBeingEaten){
+        animationHelper.stopIdle();
+        tamagotchiState.setMenuActive(false);
+        tamagotchiState.setEatingMenuActive(true);
+        meat.setVisible(true);
+        cherry.setVisible(true);
+        bred.setVisible(true);
+        selector.setVisible(true);
+        selector.setLayoutX(menu1.getSelectorXPosition2());
+        selector.setLayoutY(menu1.getSelectorYPosition2());
+
+    }
+
+    // verlasse Menü 1 = Eating Menu
+    public void buttonMiddleLeaveMenu1(ImageView currentImage, ImageView meat, ImageView cherry, ImageView bred, ImageView selector, ImageView foodBeingEaten){
+        tamagotchiState.setMenuActive(true);
+        tamagotchiState.setEatingMenuActive(false);
+        meat.setVisible(false);
+        cherry.setVisible(false);
+        bred.setVisible(false);
+        selector.setVisible(false);
+        foodBeingEaten.setVisible(false);
+        tamagotchiState.setEating(false);
+
+        stateHandler.changeStateAndImage(currentImage);
+        animationHelper.startIdle(currentImage);
     }
 
     // aktiviere Menü 2 = Sleep Menü
@@ -138,7 +181,8 @@ public class ButtonHandler {
         gamePane.getChildren().remove(tetrisPane);
         tetrisPane.stopGame();
 
-
+        stateHandler.changeStateAndImage(currentImage);
+        animationHelper.startIdle(currentImage);
         currentImage.setVisible(true);
     }
 
@@ -174,6 +218,23 @@ public class ButtonHandler {
 
         stateHandler.changeStateAndImage(currentImage);
         currentImage.setVisible(true);
+    }
+
+    public void handleEating(ImageView foodBeingEaten, ImageView selector, ImageView currentImage){
+        tamagotchiState.setEating(true);
+        if (selector.getLayoutX() == menu1.getSelectorXPosition1()) {
+            foodBeingEaten.setImage(menu1.getBredGif());
+            currentImage.setImage(menu1.getEatingTamagotchi());
+            foodBeingEaten.setVisible(true);
+        } else if (selector.getLayoutX() == menu1.getSelectorXPosition2()) {
+            foodBeingEaten.setImage(menu1.getMeatGif());
+            currentImage.setImage(menu1.getEatingTamagotchi());
+            foodBeingEaten.setVisible(true);
+        } else if (selector.getLayoutX() == menu1.getSelectorXPosition3()) {
+            foodBeingEaten.setImage(menu1.getCherryGif());
+            currentImage.setImage(menu1.getEatingTamagotchi());
+            foodBeingEaten.setVisible(true);
+        }
     }
 
 }
