@@ -27,7 +27,6 @@ public class Menu1 {
   private final double selectorYPosition3 = 173;
 
 
-
   public Menu1(TamagotchiState tamagotchiState) {
     this.tamagotchiState = tamagotchiState;
   }
@@ -114,7 +113,9 @@ public class Menu1 {
       case ADULT -> {
         return this.AdultEating;
       }
+
     }
+    tamagotchiState.hungry+=10;
     return null;
   }
 }

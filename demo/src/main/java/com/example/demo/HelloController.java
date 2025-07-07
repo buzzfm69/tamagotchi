@@ -44,6 +44,8 @@ public class HelloController {
     private Button buttonMiddle;
     @FXML
     private Button buttonRight;
+    @FXML
+    private Button gameOverButton;
 
     //Labels
     @FXML
@@ -64,8 +66,6 @@ public class HelloController {
     //Areas
     @FXML
     private AnchorPane gamePane;
-
-
 
     private final AnimationHelper animationHelper = new AnimationHelper();
     private final TamagotchiState tamagotchiState = new TamagotchiState();
@@ -108,7 +108,7 @@ public class HelloController {
         buttonRight.setMouseTransparent(false);
 
         if (!tamagotchiState.isEggActive()){
-            stateHandler.startStateTimer(menuImage, currentImage, labelWeight, labelAge);
+            stateHandler.startStateTimer(menuImage, currentImage, labelWeight, labelAge, gameOverButton);
         }
         stateHandler.updateLifeStage();
         stateHandler.updateWeightDisplay(labelWeight, labelAge);
@@ -184,7 +184,12 @@ public class HelloController {
         //start button klicken
         if (startButton.isVisible()){
             handleStart();
-        } else {
+        }
+        // game over button klicken
+        if(gameOverButton.isVisible()){
+            handleGameOverButton();
+        }
+        else {
         switch (tamagotchiState.imageIndex){
             //Menü
             case 1:
@@ -224,6 +229,21 @@ public class HelloController {
                     break;
             }
         }
+    }
+
+    @FXML
+    public void handleGameOverButton(){
+        gameOverButton.setVisible(false);
+        tamagotchiState.setGameOver(false);
+        tamagotchiState.setTamagotchiDead(false);
+        tamagotchiState.setHappiness(100);
+        tamagotchiState.setClean(100);
+        tamagotchiState.setHungry(100);
+        tamagotchiState.setHealth(100);
+        tamagotchiState.clickCountMenu = 0;
+        animationHelper.stopIdle();
+        handleStart();
+
     }
 
 }

@@ -18,9 +18,12 @@ public class TamagotchiState {
     private boolean isChildActive;
     private boolean isTeenagerActive;
     private boolean isAdultActive;
+    private boolean isTamagotchiDead;
 
     private boolean isEating;
     private boolean isSleeping;
+
+    private boolean isGameOver = false;
 
     public int imageIndex = 0;
     public int subMenu6Index = -1; // -1 für "noch im WeightMenü"
@@ -193,5 +196,53 @@ public class TamagotchiState {
 
     public void setEating(boolean eating) {
         isEating = eating;
+    }
+
+    public boolean isTamagotchiDead() {
+        return isTamagotchiDead;
+    }
+
+    public void setTamagotchiDead(boolean tamagotchiDead) {
+        isTamagotchiDead = tamagotchiDead;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        isGameOver = gameOver;
+    }
+
+    public int getHungry() {
+        return hungry;
+    }
+
+    public void setHungry(int hungry) {
+        this.hungry = hungry;
+    }
+
+    public int getClean() {
+        return clean;
+    }
+
+    public void setClean(int clean) {
+        this.clean = clean;
+    }
+
+    public int getHappiness() {
+        return happiness;
+    }
+
+    public void setHappiness(int happiness) {
+        this.happiness = happiness;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

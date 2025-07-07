@@ -16,7 +16,7 @@
          </image>
       </ImageView>
 
-       <Button fx:id="startButton" alignment="TOP_CENTER" layoutX="178.0" layoutY="204.0" onAction="#handleStart" prefHeight="18.0" prefWidth="50.0" styleClass="pixel-font4" stylesheets="@../../../styles/styles.css" text="Start" textAlignment="CENTER" />
+       <Button fx:id="startButton" alignment="BOTTOM_CENTER" layoutX="178.0" layoutY="204.0" onAction="#handleStart" prefHeight="18.0" prefWidth="50.0" styleClass="pixel-font4" stylesheets="@../../../styles/styles.css" text="Start" textAlignment="CENTER" />
        
                   <ImageView fx:id="menuImage" fitHeight="532.0" fitWidth="362.0" layoutX="31.0" layoutY="-76.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -90,6 +90,7 @@
       <Label fx:id="labelClean" layoutX="135.0" layoutY="178.0" prefHeight="27.0" prefWidth="193.0" styleClass="pixel-font3" stylesheets="@../../../styles/styles.css" text="Sauberkeit" visible="false" />
       <Label fx:id="labelHealth" layoutX="135.0" layoutY="178.0" prefHeight="27.0" prefWidth="193.0" styleClass="pixel-font3" stylesheets="@../../../styles/styles.css" text="Gesundheit" visible="false" />
       <Label fx:id="labelHappiness" layoutX="135.0" layoutY="178.0" prefHeight="27.0" prefWidth="193.0" styleClass="pixel-font3" stylesheets="@../../../styles/styles.css" text="Stimmung" visible="false" />
+      <Button fx:id="gameOverButton" alignment="BOTTOM_CENTER" layoutX="166.0" layoutY="209.0" styleClass="pixel-font4" stylesheets="@../../../styles/styles.css" text="Game Over" textAlignment="CENTER" visible="false" />
 
    </children>
 </AnchorPane>

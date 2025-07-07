@@ -216,7 +216,9 @@ public class ButtonHandler {
         tamagotchiState.setMenuActive(true);
 
         stateHandler.changeStateAndImage(currentImage);
-        currentImage.setVisible(true);
+        if (!tamagotchiState.isGameOver()) {
+            currentImage.setVisible(true);
+        }
     }
 
     public void handleEating(ImageView foodBeingEaten, ImageView selector, ImageView currentImage){

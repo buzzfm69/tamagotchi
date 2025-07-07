@@ -39,7 +39,9 @@ public class TetrisPane extends Pane {
   private final Image tamagotchiChildGif = new Image(getClass().getResource("/gifs/Child.gif").toExternalForm());
   private final Image tamagotchiTeenagerGif = new Image(getClass().getResource("/gifs/Teenager.gif").toExternalForm());
   private final Image tamagotchiAdultGif = new Image(getClass().getResource("/gifs/Adult.gif").toExternalForm());
+  private final Image tamagotchiDeadEmptyScreen = new Image(getClass().getResource("/images/EmptyScreen.png").toExternalForm());
   private final TamagotchiState state;
+
 
   public TetrisPane(TamagotchiState tamagotchiState) {
     this.state = tamagotchiState;
@@ -61,10 +63,12 @@ public class TetrisPane extends Pane {
       case CHILD -> tamagotchiChildGif;
       case TEEN -> tamagotchiTeenagerGif;
       case ADULT -> tamagotchiAdultGif;
+      case DEAD -> tamagotchiDeadEmptyScreen;
     };
   }
 
   public void startGame() {
+    state.happiness += 10;
     if (!gameOver) {
       score = 0;
       tick = 0;

@@ -4,5 +4,6 @@ public enum LifeStage {
     BABY,
     CHILD,
     TEEN,
-    ADULT
+    ADULT,
+    DEAD
 }
