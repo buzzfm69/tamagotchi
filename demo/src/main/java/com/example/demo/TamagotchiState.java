@@ -1,13 +1,9 @@
 package com.example.demo;
 
-import com.example.demo.Menu.Menu6;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
+import java.io.Serializable;
+
+//public class TamagotchiState implements Serializable {
+  //  private static final long serialVersionUID = 1L;
 
 public class TamagotchiState {
     private boolean isMenuActive;

@@ -4,14 +4,17 @@ import com.example.demo.Handler.AnimationHelper;
 import com.example.demo.Handler.ButtonHandler;
 import com.example.demo.Handler.StateHandler;
 import com.example.demo.Menu.Game.TetrisPane;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Font;
-import java.net.URL;
+import javafx.util.Duration;
+import com.example.demo.SaveManager;
 
 public class HelloController {
     // Images
@@ -104,8 +107,12 @@ public class HelloController {
         buttonRight.setOpacity(0);
         buttonRight.setMouseTransparent(false);
 
-        stateHandler.startStateTimer(menuImage);
-        updateWeightDisplay();
+        if (!tamagotchiState.isEggActive()){
+            stateHandler.startStateTimer(menuImage, currentImage, labelWeight, labelAge);
+        }
+        stateHandler.updateLifeStage();
+        stateHandler.updateWeightDisplay(labelWeight, labelAge);
+        tamagotchiState.setStartButtonActive(true);
     }
 
     @FXML
@@ -114,11 +121,17 @@ public class HelloController {
         Image imageMenu = new Image(getClass().getResource("/images/MenuNoFocus.png").toExternalForm());
         menuImage.setImage(imageMenu);
 
-        //tamagotchiState.getCurrentStage();
-        //buttonHandler.changeStateAndImage(currentImage);
-
-        Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
-        currentImage.setImage(imageEgg);
+        if (!tamagotchiState.isEggActive()){
+            Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
+            currentImage.setImage(imageEgg);
+            tamagotchiState.setEggActive(true);
+            tamagotchiState.setWeight(1);
+            tamagotchiState.setAge(1);
+            tamagotchiState.setMenuActive(true);
+            tamagotchiState.setStartButtonActive(false);
+        }
+//        Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
+//        currentImage.setImage(imageEgg);
 
         // Bild anzeigen
         menuImage.setVisible(true);
@@ -129,13 +142,7 @@ public class HelloController {
         tamagotchiState.setStartButtonActive(false);
 
         tamagotchiState.setMenuActive(true);
-
-        tamagotchiState.setEggActive(true);
-    }
-
-    public void updateWeightDisplay() {
-        labelWeight.setText(tamagotchiState.weight + " kg");
-        labelAge.setText(tamagotchiState.age + " yr");
+//        tamagotchiState.setEggActive(true);
     }
 
     @FXML
@@ -161,6 +168,7 @@ public class HelloController {
         if (tamagotchiState.isWeightMenuActive()){
             buttonHandler.buttonRightSwitchSubMenu6(menuImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
         }
+        // Game-Steuerung Tetris
         if (tamagotchiState.isGameMenuActive()) {
             if (tetrisPane != null) {
                 tetrisPane.moveRight();
@@ -171,9 +179,12 @@ public class HelloController {
         }
     }
 
-    // aktiviere & verlassen Menüs
     @FXML
     public void handleClickButtonMiddle(){
+        //start button klicken
+        if (startButton.isVisible()){
+            handleStart();
+        } else {
         switch (tamagotchiState.imageIndex){
             //Menü
             case 1:
@@ -194,23 +205,25 @@ public class HelloController {
                 }
                 break;
 
-            case 3:
-                if (tamagotchiState.isMenuActive()){
-                    buttonHandler.buttonMiddleActivateMenu3(currentImage, gamePane);
-                } else if (tetrisPane.gameOver) {
-                    buttonHandler.buttonMiddleLeaveMenu3(currentImage, gamePane);
-                } else {
-                    tetrisPane.rotateCurrentPiece();
-                }
-                break;
+                case 3:
+                    if (tamagotchiState.isMenuActive()){
+                        buttonHandler.buttonMiddleActivateMenu3(currentImage, gamePane);
+                    } else if (tetrisPane.gameOver) {
+                        buttonHandler.buttonMiddleLeaveMenu3(currentImage, gamePane);
+                    } else {
+                        tetrisPane.rotateCurrentPiece();
+                    }
+                    break;
 
-            case 6:
-                if (tamagotchiState.isMenuActive()){
-                    buttonHandler.buttonMiddleActivateMenu6(menuImage, currentImage, labelWeight, labelAge);
-                } else{
-                    buttonHandler.buttonMiddleLeaveMenu6(menuImage, currentImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
-                }
-                break;
+                case 6:
+                    if (tamagotchiState.isMenuActive()){
+                        buttonHandler.buttonMiddleActivateMenu6(menuImage, currentImage, labelWeight, labelAge);
+                    } else{
+                        buttonHandler.buttonMiddleLeaveMenu6(menuImage, currentImage, labelWeight, labelAge, labelHungry, labelClean, labelHealth, labelHappiness);
+                    }
+                    break;
+            }
         }
     }
+
 }

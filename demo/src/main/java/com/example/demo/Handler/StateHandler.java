@@ -21,7 +21,7 @@ public class StateHandler {
     }
 
     // Hunger
-    public void decreaseHungry(int amount) {
+    public void decreaseHungry(double amount) {
         tamagotchiState.hungry -= amount;
         if (tamagotchiState.hungry < 0) tamagotchiState.hungry = 0;
     }
@@ -35,7 +35,7 @@ public class StateHandler {
 
 
     // Sauberkeit
-    public void decreaseClean(int amount) {
+    public void decreaseClean(double amount) {
         tamagotchiState.clean -= amount;
         if (tamagotchiState.clean < 0) tamagotchiState.clean = 0;
     }
@@ -91,7 +91,7 @@ public class StateHandler {
 
 
     // Alter
-    public void increaseAge(int amount) {
+    public void increaseAge(double amount) {
         tamagotchiState.age += amount;
         if (tamagotchiState.age > 100) tamagotchiState.age = 100;
     }
@@ -100,15 +100,18 @@ public class StateHandler {
     }
 
 
-    public void startStateTimer(ImageView menuImage) {
+    public void startStateTimer(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge) {
         Timeline stateTimer = new Timeline(
                 new KeyFrame(Duration.seconds(10), e -> {
-                    decreaseHungry(20);
+                    decreaseHungry(0.5);
+                    decreaseClean(0.5);
 
-                    decreaseClean(5);
+                    increaseWeight(1);
+                    increaseAge(5);
 
-                    increaseAge(1);
                     updateLifeStage();
+                    changeStateAndImage(currentImage);
+                    updateWeightDisplay(labelWeight, labelAge);
                 })
         );
         stateTimer.setCycleCount(Animation.INDEFINITE);
@@ -127,33 +130,69 @@ public class StateHandler {
                 }
                 tamagotchiState.setBabyActive(true);
                 break;
+
             case CHILD:
-                Image childImage = new Image(getClass().getResource("/images/Child.png").toExternalForm());
-                currentImage.setImage(childImage);
+                currentImage.setFitWidth(55);
+                currentImage.setFitHeight(50);
+                if (tamagotchiState.isSleeping()){
+                    Image childSleepingImage = new Image(getClass().getResource("/images/ChildSleeping.png").toExternalForm());
+                    currentImage.setImage(childSleepingImage);
+                }else {
+                    Image childImage = new Image(getClass().getResource("/images/Child.png").toExternalForm());
+                    currentImage.setImage(childImage);
+                }
                 tamagotchiState.setChildActive(true);
                 break;
+
             case TEEN:
-                Image teenagerImage = new Image(getClass().getResource("/images/Teenager.png").toExternalForm());
-                currentImage.setImage(teenagerImage);
+                currentImage.setFitWidth(55);
+                currentImage.setFitHeight(50);
+                if (tamagotchiState.isSleeping()){
+                    Image teenSleepingImage = new Image(getClass().getResource("/images/TeenagerSleeping.png").toExternalForm());
+                    currentImage.setImage(teenSleepingImage);
+                }else {
+                    Image teenagerImage = new Image(getClass().getResource("/images/Teenager.png").toExternalForm());
+                    currentImage.setImage(teenagerImage);
+                }
                 tamagotchiState.setTeenagerActive(true);
                 break;
+
             case ADULT:
-                Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
-                currentImage.setImage(adultImage);
+                currentImage.setFitWidth(55);
+                currentImage.setFitHeight(50);
+                if (tamagotchiState.isSleeping()){
+                    Image adultSleepingImage = new Image(getClass().getResource("/images/AdultSleeping.png").toExternalForm());
+                    currentImage.setImage(adultSleepingImage);
+                } else {
+                    Image adultImage = new Image(getClass().getResource("/images/Adult.png").toExternalForm());
+                    currentImage.setImage(adultImage);
+                }
                 tamagotchiState.setAdultActive(true);
                 break;
         }
     }
 
     public void updateLifeStage(){
-        if (tamagotchiState.age >= 3 && tamagotchiState.age < 6) {
+        if (tamagotchiState.age >= 3 && tamagotchiState.age < 13) {
             tamagotchiState.setCurrentStage(LifeStage.CHILD);
-        } else if (tamagotchiState.age >= 6 && tamagotchiState.age < 9) {
+        } else if (tamagotchiState.age >= 13 && tamagotchiState.age < 18) {
             tamagotchiState.setCurrentStage(LifeStage.TEEN);
-        } else if (tamagotchiState.age >= 9) {
+        } else if (tamagotchiState.age >= 19) {
             tamagotchiState.setCurrentStage(LifeStage.ADULT);
         } else {
             tamagotchiState.setCurrentStage(LifeStage.BABY);
         }
+    }
+
+    public void updateWeightDisplay(Label labelWeight, Label labelAge) {
+        labelWeight.setText(tamagotchiState.weight + " kg");
+        labelAge.setText(tamagotchiState.age + " yr");
+    }
+
+    public void resetImagePosition(ImageView currentImage, double x, double y) {
+        currentImage.setTranslateX(0);
+        currentImage.setTranslateY(0);
+        currentImage.setLayoutX(x);
+        currentImage.setLayoutY(y);
     }
 }

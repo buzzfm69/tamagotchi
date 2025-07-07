@@ -16,7 +16,7 @@
          </image>
       </ImageView>
 
-       <Button fx:id="startButton" alignment="TOP_CENTER" layoutX="180.0" layoutY="200.0" onAction="#handleStart" text="Start" />
+       <Button fx:id="startButton" alignment="TOP_CENTER" layoutX="178.0" layoutY="204.0" onAction="#handleStart" prefHeight="18.0" prefWidth="50.0" styleClass="pixel-font4" stylesheets="@../../../styles/styles.css" text="Start" textAlignment="CENTER" />
        
                   <ImageView fx:id="menuImage" fitHeight="532.0" fitWidth="362.0" layoutX="31.0" layoutY="-76.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -73,11 +73,11 @@
             <Image url="@../../../gifs/Meat.GIF" />
          </image>
       </ImageView>
-      <Label fx:id="labelAge" layoutX="201.0" layoutY="191.0" styleClass="pixel-font" text="0 yr" visible="false">
+      <Label fx:id="labelAge" layoutX="195.0" layoutY="185.0" styleClass="pixel-font" text="0 yr" textAlignment="CENTER" visible="false">
          <font>
             <Font name="Press Start 2P Regular" size="17.0" />
          </font></Label>
-      <Label fx:id="labelWeight" layoutX="201.0" layoutY="220.0" styleClass="pixel-font" text="0 kg" visible="false">
+      <Label fx:id="labelWeight" layoutX="195.0" layoutY="225.0" styleClass="pixel-font" text="0 kg" textAlignment="CENTER" visible="false">
          <font>
             <Font name="Press Start 2P Regular" size="17.0" />
          </font></Label>

@@ -5,7 +5,7 @@
 
 .pixel-font {
     -fx-font-family: "Press Start 2P Regular";
-    -fx-font-size: 17px;
+    -fx-font-size: 16px;
 }
 
 .pixel-font2 {
@@ -16,4 +16,9 @@
 .pixel-font3 {
     -fx-font-family: "Press Start 2P Regular";
     -fx-font-size: 14px;
+}
+
+.pixel-font4 {
+    -fx-font-family: "Press Start 2P Regular";
+    -fx-font-size: 7px;
 }

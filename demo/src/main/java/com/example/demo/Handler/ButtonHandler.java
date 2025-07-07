@@ -73,7 +73,6 @@ public class ButtonHandler {
     // Linker Button beim Start, 3x klicken zum aktivieren
     public void buttonLeftActivateTamagotchi(ImageView currentImage){
         tamagotchiState.clickCountMenu++;
-
         if (tamagotchiState.isMenuActive()){
             if (tamagotchiState.clickCountMenu ==3){
                 animationHelper.animateStartSequence(currentImage); //Ei Sequenz starten
@@ -140,7 +139,6 @@ public class ButtonHandler {
         menuImage.setImage(menuSleepOnImage);
 
         labelSleep.setVisible(true);
-        //animationHelper.stopIdle();
         animationHelper.animateSleepLabel(labelSleep);
         stateHandler.changeStateAndImage(currentImage);
     }
@@ -156,6 +154,8 @@ public class ButtonHandler {
 
         stateHandler.changeStateAndImage(currentImage);
 
+        stateHandler.resetImagePosition(currentImage, 171, 195);
+
         animationHelper.startIdle(currentImage);
         animationHelper.stopSleepLabelAnimation();
         labelSleep.setVisible(false);
@@ -168,7 +168,6 @@ public class ButtonHandler {
         gamePane.setVisible(true);
         gamePane.getChildren().add(tetrisPane);
         tetrisPane.startGame();
-
 
         currentImage.setVisible(false);
     }
