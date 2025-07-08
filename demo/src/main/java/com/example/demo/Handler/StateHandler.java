@@ -2,6 +2,7 @@ package com.example.demo.Handler;
 
 import com.example.demo.LifeStage;
 import com.example.demo.Menu.Menu6;
+import com.example.demo.SaveManager;
 import com.example.demo.TamagotchiState;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -13,12 +14,14 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 public class StateHandler {
-    private final TamagotchiState tamagotchiState;
-    private final Menu6 menu6;
+    private TamagotchiState tamagotchiState;
 
     public StateHandler(TamagotchiState tamagotchiState) {
         this.tamagotchiState = tamagotchiState;
-        this.menu6 = new Menu6(tamagotchiState);
+    }
+
+    public void updateState(TamagotchiState newState) {
+        this.tamagotchiState = newState;
     }
 
     // Hunger
@@ -105,22 +108,22 @@ public class StateHandler {
     }
 
 
-    public void startStateTimer(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge, Button gameOverButton) {
+    public void startStateTimer(ImageView menuImage, ImageView currentImage, Label labelWeight, Label labelAge, Label labelSleep, Label labelHungry, Label labelClean, Label labelHealth, Label labelHappiness, Button gameOverButton) {
         Timeline stateTimer = new Timeline(
                 new KeyFrame(Duration.seconds(10), e -> {
                     if(!tamagotchiState.isGameOver()){
-                        decreaseHungry(50);
+                        decreaseHungry(20);
                         decreaseClean(0.5);
                         decreaseHappiness(0.25);
 
-                        increaseWeight(0.5);
-                        increaseAge(1);
+                        increaseWeight(2);
+                        increaseAge(2);
 
                         updateLifeStage();
                         changeStateAndImage(currentImage);
                         updateWeightDisplay(labelWeight, labelAge);
                     }
-                    gameOver(currentImage, menuImage, gameOverButton);
+                    gameOver(currentImage, menuImage, gameOverButton, labelWeight, labelAge, labelSleep, labelHungry, labelClean, labelHealth, labelHappiness);
                 })
         );
         stateTimer.setCycleCount(Animation.INDEFINITE);
@@ -129,6 +132,11 @@ public class StateHandler {
 
     public void changeStateAndImage(ImageView currentImage){
         switch (tamagotchiState.getCurrentStage()){
+            case EGG:
+                Image eggImage = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
+                currentImage.setImage(eggImage);
+                tamagotchiState.setEggActive(true);
+                break;
             case BABY:
                 if (tamagotchiState.isSleeping()){
                     Image babySleepingImage = new Image(getClass().getResource("/images/BabySleeping.png").toExternalForm());
@@ -138,8 +146,8 @@ public class StateHandler {
                     currentImage.setImage(babySleepingImage);
                 }
                 tamagotchiState.setBabyActive(true);
+                tamagotchiState.setEggActive(false);
                 break;
-
             case CHILD:
                 currentImage.setFitWidth(55);
                 currentImage.setFitHeight(50);
@@ -151,8 +159,8 @@ public class StateHandler {
                     currentImage.setImage(childImage);
                 }
                 tamagotchiState.setChildActive(true);
+                tamagotchiState.setBabyActive(false);
                 break;
-
             case TEEN:
                 currentImage.setFitWidth(55);
                 currentImage.setFitHeight(50);
@@ -164,8 +172,8 @@ public class StateHandler {
                     currentImage.setImage(teenagerImage);
                 }
                 tamagotchiState.setTeenagerActive(true);
+                tamagotchiState.setChildActive(false);
                 break;
-
             case ADULT:
                 currentImage.setFitWidth(55);
                 currentImage.setFitHeight(50);
@@ -177,7 +185,17 @@ public class StateHandler {
                     currentImage.setImage(adultImage);
                 }
                 tamagotchiState.setAdultActive(true);
+                tamagotchiState.setTeenagerActive(false);
                 break;
+            default:
+            eggImage = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
+            currentImage.setImage(eggImage);
+            tamagotchiState.setEggActive(true);
+            tamagotchiState.setChildActive(false);
+            tamagotchiState.setBabyActive(false);
+            tamagotchiState.setTeenagerActive(false);
+            tamagotchiState.setAdultActive(false);
+            break;
 /*
             case DEAD:
                 if (tamagotchiState.isTamagotchiDead()){
@@ -216,17 +234,40 @@ public class StateHandler {
         currentImage.setLayoutY(y);
     }
 
-    public void gameOver(ImageView currentImage, ImageView menuImage, Button gameOverButton){
+    public void gameOver(ImageView currentImage, ImageView menuImage, Button gameOverButton, Label labelWeight, Label labelAge, Label labelSleep, Label labelHungry, Label labelClean, Label labelHealth, Label labelHappiness){
         if (tamagotchiState.hungry ==0 || tamagotchiState.health ==0){
             Image emptyScreen = new Image(getClass().getResource("/images/EmptyScreen.png").toExternalForm());
             menuImage.setImage(emptyScreen);
 
+            tamagotchiState.clickCountMenu = 0;
+            tamagotchiState.weight = 1;
+            tamagotchiState.age = 1;
+            tamagotchiState.hungry = 100;
+            tamagotchiState.happiness = 100;
+            tamagotchiState.health = 100;
+            tamagotchiState.clean = 100;
+
             tamagotchiState.setTamagotchiDead(true);
             tamagotchiState.setGameOver(true);
+
+            tamagotchiState.setMenuActive(false);
+            tamagotchiState.setWeightMenuActive(false);
+            tamagotchiState.setGameMenuActive(false);
+            tamagotchiState.setEatingMenuActive(false);
+            tamagotchiState.setSleepMenuActive(false);
+
+            labelWeight.setVisible(false);
+            labelAge.setVisible(false);
+            labelSleep.setVisible(false);
+            labelHungry.setVisible(false);
+            labelClean.setVisible(false);
+            labelHealth.setVisible(false);
+            labelHappiness.setVisible(false);
 
             updateLifeStage();
             currentImage.setVisible(false);
             gameOverButton.setVisible(true);
         }
     }
+
 }

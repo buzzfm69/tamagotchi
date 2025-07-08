@@ -40,6 +40,7 @@ public class TetrisPane extends Pane {
   private final Image tamagotchiTeenagerGif = new Image(getClass().getResource("/gifs/Teenager.gif").toExternalForm());
   private final Image tamagotchiAdultGif = new Image(getClass().getResource("/gifs/Adult.gif").toExternalForm());
   private final Image tamagotchiDeadEmptyScreen = new Image(getClass().getResource("/images/EmptyScreen.png").toExternalForm());
+  private final Image tamagotchiEggImage = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
   private final TamagotchiState state;
 
 
@@ -59,6 +60,7 @@ public class TetrisPane extends Pane {
 
   private Image selectGif(LifeStage stage) {
     return switch (stage) {
+      case EGG -> tamagotchiEggImage;
       case BABY -> tamagotchiBabyGif;
       case CHILD -> tamagotchiChildGif;
       case TEEN -> tamagotchiTeenagerGif;

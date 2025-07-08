@@ -68,7 +68,7 @@ public class HelloController {
     private AnchorPane gamePane;
 
     private final AnimationHelper animationHelper = new AnimationHelper();
-    private final TamagotchiState tamagotchiState = new TamagotchiState();
+    private TamagotchiState tamagotchiState = new TamagotchiState();
     private final StateHandler stateHandler = new StateHandler(this.tamagotchiState);
     private final TetrisPane tetrisPane = new TetrisPane(tamagotchiState);
     private final ButtonHandler buttonHandler = new ButtonHandler(this.tamagotchiState, this.animationHelper, this.stateHandler, this.tetrisPane);
@@ -108,7 +108,7 @@ public class HelloController {
         buttonRight.setMouseTransparent(false);
 
         if (!tamagotchiState.isEggActive()){
-            stateHandler.startStateTimer(menuImage, currentImage, labelWeight, labelAge, gameOverButton);
+            stateHandler.startStateTimer(menuImage, currentImage, labelWeight, labelAge, labelSleep, labelHungry, labelClean, labelHealth, labelHappiness, gameOverButton);
         }
         stateHandler.updateLifeStage();
         stateHandler.updateWeightDisplay(labelWeight, labelAge);
@@ -120,18 +120,21 @@ public class HelloController {
         // Bild laden
         Image imageMenu = new Image(getClass().getResource("/images/MenuNoFocus.png").toExternalForm());
         menuImage.setImage(imageMenu);
+        tamagotchiState.setMenuActive(true);
+        tamagotchiState.setStartButtonActive(false);
 
-        if (!tamagotchiState.isEggActive()){
-            Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
-            currentImage.setImage(imageEgg);
-            tamagotchiState.setEggActive(true);
-            tamagotchiState.setWeight(1);
-            tamagotchiState.setAge(1);
-            tamagotchiState.setMenuActive(true);
-            tamagotchiState.setStartButtonActive(false);
+        tamagotchiState.setTamagotchiDead(false);
+        tamagotchiState.setGameOver(false);
+
+        if (tamagotchiState.age == 1 && tamagotchiState.weight == 1){
+            tamagotchiState.setCurrentStage(LifeStage.EGG);
         }
-//        Image imageEgg = new Image(getClass().getResource("/images/Ei.png").toExternalForm());
-//        currentImage.setImage(imageEgg);
+
+        stateHandler.changeStateAndImage(currentImage);
+        tamagotchiState.imageIndex = 0;
+        if (!tamagotchiState.isEggActive()){
+           animationHelper.startIdle(currentImage);
+        }
 
         // Bild anzeigen
         menuImage.setVisible(true);
@@ -243,7 +246,21 @@ public class HelloController {
         tamagotchiState.clickCountMenu = 0;
         animationHelper.stopIdle();
         handleStart();
+    }
 
+    public TamagotchiState getState() {
+        return this.tamagotchiState;
+    }
+
+    public void updateState(TamagotchiState newState) {
+        this.tamagotchiState = newState;
+    }
+
+    public void setState(TamagotchiState loadedState) {
+        this.tamagotchiState.copyFrom(loadedState);
+
+        stateHandler.updateState(tamagotchiState);
+        buttonHandler.updateState(tamagotchiState);
     }
 
 }

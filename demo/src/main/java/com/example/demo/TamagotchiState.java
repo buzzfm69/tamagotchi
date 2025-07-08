@@ -6,6 +6,10 @@ import java.io.Serializable;
   //  private static final long serialVersionUID = 1L;
 
 public class TamagotchiState {
+    public TamagotchiState() {
+        // Kann leer bleiben – Gson befüllt die Felder selbst
+    }
+
     private boolean isMenuActive;
     private boolean isWeightMenuActive = false;
     private boolean isGameMenuActive;
@@ -37,7 +41,7 @@ public class TamagotchiState {
     public int happiness = 100;
     public int health = 100;
 
-    private LifeStage currentStage;
+    public LifeStage currentStage;
 
     public LifeStage getCurrentStage() {
         return currentStage;
@@ -245,4 +249,33 @@ public class TamagotchiState {
     public void setHealth(int health) {
         this.health = health;
     }
+
+    public void copyFrom(TamagotchiState other) {
+        this.isEggActive = other.isEggActive;
+        this.isBabyActive = other.isBabyActive;
+        this.isChildActive = other.isChildActive;
+        this.isTeenagerActive = other.isTeenagerActive;
+        this.isAdultActive = other.isAdultActive;
+        this.isTamagotchiDead = other.isTamagotchiDead;
+        this.isGameOver = other.isGameOver;
+        this.isStartButtonActive = other.isStartButtonActive;
+        this.isEating = other.isEating;
+        this.isSleeping = other.isSleeping;
+        this.weight = other.weight;
+        this.age = other.age;
+        this.happiness = other.happiness;
+        this.hungry = other.hungry;
+        this.health = other.health;
+        this.clean = other.clean;
+        this.clickCountMenu = other.clickCountMenu;
+        this.currentStage = other.currentStage;
+        this.imageIndex = other.imageIndex;
+        this.subMenu6Index = other.subMenu6Index;
+        this.isMenuActive = other.isMenuActive;
+        this.isWeightMenuActive = other.isWeightMenuActive;
+        this.isGameMenuActive = other.isGameMenuActive;
+        this.isEatingMenuActive = other.isEatingMenuActive;
+        this.isSleepMenuActive = other.isSleepMenuActive;
+    }
+
 }

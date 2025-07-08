@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class ButtonHandler {
-    private final TamagotchiState tamagotchiState;
+    private TamagotchiState tamagotchiState;
     private final AnimationHelper animationHelper;
     private final StateHandler stateHandler;
     private final Menu6 menu6;
@@ -27,6 +27,9 @@ public class ButtonHandler {
         this.tetrisPane = tetrisPane;
     }
 
+    public void updateState(TamagotchiState newState) {
+        this.tamagotchiState = newState;
+    }
 
     // Button Rechts Hauptmenüs, Menüs Switchen
     public void buttonRightSwitchMenu(String[] menuFocusImages, ImageView menuImage){
